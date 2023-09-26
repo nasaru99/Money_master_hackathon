@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card mb-4">
+              <img src="{{ curso.imagen.url }}" alt="{{ curso.titulo }}" class="card-img-top" style="max-width: 100%; height: auto;">
+
+                <div class="card-body">
+                    <h2 class="card-title">{{ curso.titulo }}</h2>
+                    <p class="card-text">{{ curso.descripcion }}</p>
+                    <p class="card-text"><strong>Precio:</strong> ${{ curso.precio }}</p>
+                    {% if user == curso.instructor %}
+                        <a href="{% url 'crear_leccion' curso_id=curso.id %}" class="btn btn-primary">Agregar Lección</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h3>Lecciones:</h3>
+            <ul class="list-group">
+                {% for leccion in lecciones %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>{{ leccion.titulo }}</span>
+                        {% if user == curso.instructor %}
+                            <a href="{% url 'marcar_como_completada' leccion_id=leccion.id %}" class="btn btn-success btn-sm">Completada</a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-8 offset-md-2">
+            <h3>Inscripciones:</h3>
+            <ul class="list-group">
+                {% for inscripcion in inscripciones %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>{{ inscripcion.usuario.username }}</span>
+                        {% if inscripcion.completado %}
+                            <span class="badge badge-success">Completado</span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    {% if user != curso.instructor %}
+        <div class="row mt-4">
+            <div class="col-md-8 offset-md-2">
+                <a href="{% url 'inscribir_curso' curso_id=curso.id %}" class="btn btn-primary">Inscribirse en el Curso</a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

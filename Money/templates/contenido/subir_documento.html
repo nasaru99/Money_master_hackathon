@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<style>
+    body {
+        #test p{
+            display: flex;
+            align-items:flex-start;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h2>Subir Documento</h2>
+<form id="test" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Subir</button>
+</form>
+{% endblock %}

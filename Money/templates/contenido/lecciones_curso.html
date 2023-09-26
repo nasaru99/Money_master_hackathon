@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Lecciones para el curso: {{ curso.titulo }}</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Resumen</th>
+            <th>Tipo de Contenido</th>
+            <th>Duración</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for leccion in lecciones %}
+        <tr>
+            <td><a href="{% url 'contenido_leccion' leccion.id %}">{{ leccion.titulo }}</a></td>
+            <td>{{ leccion.resumen }}</td>
+            <td>{{ leccion.contenido.tipo }}</td>
+            <td>{{ leccion.duracion }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

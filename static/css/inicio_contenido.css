@@ -1,0 +1,301 @@
+/* Estilos generales */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Estilos para la sección izquierda */
+.left {
+  width: 20%; /* Ajustamos el ancho a 20% */
+  padding: 20px;
+  background-color: #f0f2f5;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.left p {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.profile-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.username {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Estilos para las tarjetas de publicaciones y cursos */
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: none;
+  margin-bottom: 20px;
+}
+
+.card-header {
+  background-color: #ffffff;
+  border: none;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 16px;
+}
+
+.content-list {
+  margin-top: 10px;
+}
+
+.content-item {
+  margin-top: 10px;
+}
+
+.content-item p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.img-medium {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Estilos para botones y enlaces */
+.btn {
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.btn-primary {
+  background-color: #1877f2;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #166fe5;
+}
+
+.chat-link {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.chat-link:hover {
+  color: #1877f2;
+}
+
+/* Estilos para ventanas modales */
+.modal-content {
+  border-radius: 10px;
+}
+
+/* Estilos para la ventana de chat */
+.chat-box {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.sent {
+  background-color: #1877f2;
+  color: #fff;
+}
+
+.received {
+  background-color: #fff;
+}
+
+/* Estilos para el formulario de chat */
+.chat-form {
+  margin-top: 10px;
+}
+
+.chat-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  resize: none;
+}
+
+.chat-form button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #1877f2;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.chat-form button:hover {
+  background-color: #166fe5;
+}
+
+/* Estilos para la lista de grupos y amigos */
+.list-group-item {
+  padding: 10px;
+}
+
+/* Estilos para los avatares de chat */
+.chat-avatar {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* Estilos adicionales */
+.video-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Estilo para imagen de perfil */
+.profile-image {
+  object-fit: cover;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* Estilo para la lista de contenido */
+.content-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+/* Estilo para cada elemento de contenido */
+.content-item {
+  border: 1px solid #ddd;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo específico para contenido de texto */
+.text-content {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Estilo para imágenes dentro de contenido */
+.content-item img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Estilo para videos dentro de contenido */
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+}
+
+.video-container iframe,
+.video-container video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Estilo para el enlace de descarga */
+.content-item a {
+  display: inline-block;
+  background-color: #007bff;
+  color: #fff;
+  padding: 5px 10px;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.content-item a:hover {
+  background-color: #0056b3;
+}
+
+/* Estilos para las secciones izquierda y derecha */
+.left {
+  width: 20%;
+  background-color: blue;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.right {
+  width: 20%;
+  background-color: green;
+  overflow-y: auto;
+  height: 100%;
+}
+
+/* Estilos para las secciones izquierda y derecha */
+.left {
+  width: 20%;
+  background-color: blue;
+  overflow-y: auto;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.right {
+  width: 20%;
+  background-color: green;
+  overflow-y: auto;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
+/* Añade márgenes para el contenido principal */
+.main-content {
+  margin-left: 20%; /* Ajusta según el ancho de la sección izquierda */
+  margin-right: 20%; /* Ajusta según el ancho de la sección derecha */
+}

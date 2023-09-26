@@ -1,0 +1,22 @@
+{% extends "contenido/base.html" %}
+{% block content %}
+<div class="container my-4">
+    <h2>Subir Video</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="videoURL">URL del Video:</label>
+            <input type="url" class="form-control" id="videoURL" name="videoURL" placeholder="Ingrese la URL del video">
+        </div>
+        <!-- O si quieres que suban un archivo de video -->
+
+        <div class="form-group">
+            <label for="videoFile">Seleccione el archivo de video:</label>
+            <input type="file" class="form-control-file" id="videoFile" name="videoFile">
+        </div>
+
+        <!-- Puedes agregar más campos si los necesitas -->
+        <button type="submit" class="btn btn-primary">Subir</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/registro.css' %}">
+{% endblock %}
+
+{% block content %}
+  <!-- Fondo de pantalla -->
+  <div class="background-image">
+    
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="container">
+    <div class="card">
+      <h2>¡Sé parte de nuestra comunidad!</h2>
+      <p class="red-text">Regístrate en Money Master</p>
+  
+      <!-- Formulario de registro -->
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+  
+        <!-- Paso 1: Información básica -->
+        <div class="tab">
+          <h3>Paso 1: Información básica</h3>
+          <!-- Campos para el modelo User -->
+          <input type="text" name="username" placeholder="Nombre de Usuario" required>
+          <input type="text" name="last_name" placeholder="Apellido" required>
+          <input type="date" name="birthdate" placeholder="Fecha de nacimiento" required>
+          <input type="email" name="email" placeholder="Correo Electrónico" required>
+          <div class="select">
+            <select name="country_code">
+              <option value="NIC">NICARAGUA +555A</option>
+              <!-- Agrega más opciones de códigos de país según tus necesidades -->
+            </select>
+          </div>
+          <input type="text" name="phone_number" placeholder="Número" required>
+          <div class="gender-container">
+            <label for="gender">Género:</label>
+            <div class="gender-options">
+              <label class="gender-radio-label">
+                <input type="radio" name="gender" value="Femenino"> Femenino
+              </label>
+              <label class="gender-radio-label">
+                <input type="radio" name="gender" value="Masculino"> Masculino
+              </label>
+              <label class="gender-radio-label">
+                <input type="radio" name="gender" value="Otro"> Otro
+              </label>
+            </div>
+          </div>
+          <input type="password" name="password1" placeholder="Contraseña" required>
+          <input type="password" name="password2" placeholder="Confirmar Contraseña" required>
+          
+          <label class="accept-terms-label">
+            Acepto los <a href="#">términos y condiciones</a>:
+            <input type="checkbox" name="accept_terms" required>
+          </label>
+          
+          <div class="g-recaptcha" data-sitekey="TU_SITE_KEY"></div>
+          <button type="button" class="next">Siguiente</button>
+        </div>
+  
+        <!-- Paso 2: Información adicional -->
+        <div class="tab">
+          <h3>Paso 2: Información adicional</h3>
+          <!-- Campos adicionales para el modelo PerfilUsuario -->
+          <input type="file" name="foto" accept="image/*">
+          <input type="text" name="nivel_educativo" placeholder="Nivel Educativo">
+          <input type="text" name="ubicacion" placeholder="Ubicación">
+          <h4>Categorías de Educación Financiera:</h4>
+          <div class="categories-grid">
+            <!-- Agrega aquí los campos de categorías y subcategorías -->
+          </div>
+          <button type="button" class="prev">Anterior</button>
+          <button type="submit">Registrarse</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Agrega JavaScript para manejar la navegación entre pasos -->
+  <script src="{% static 'JS/registro.js' %}"></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}

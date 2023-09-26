@@ -1,0 +1,90 @@
+{% extends 'contenido/base.html' %}
+{% load static %}
+
+{% block extra_head %}
+
+{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h2>Crear una nueva lección</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!-- Paso 1: Título -->
+                        <div id="paso-1" class="form-step">
+                            <div class="form-group">
+                                <label for="{{ leccion_form.titulo.id_for_label }}">Título de la Lección</label>
+                                {{ leccion_form.titulo }}
+                            </div>
+                            <div class="form-group">
+                                <label for="id_tipo_contenido">Tipo de Contenido:</label>
+                                {{ leccion_form.tipo_contenido }}
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary next-step">Siguiente</button>
+                            </div>
+                        </div>
+
+                        <!-- Paso 2: Contenido -->
+                        <div id="paso-2" class="form-step">
+                          <div class="form-group">
+                              <label for="{{ leccion_form.tipo_contenido.id_for_label }}">Tipo de Contenido:</label>
+                              {{ leccion_form.tipo_contenido }}
+                          </div>
+
+                          <!-- Contenido de Texto -->
+                          <div id="contenido-texto" class="contenido-group" style="display: none;">
+                              {{ leccion_form.texto.label_tag }}
+                              {{ leccion_form.texto }}
+                          </div>
+
+                          <!-- Contenido de Imagen URL -->
+                          <div id="contenido-imagen-url" class="contenido-group" style="display: none;">
+                              {{ leccion_form.imagen_url.label_tag }}
+                              {{ leccion_form.imagen_url }}
+                          </div>
+
+                          <!-- Contenido de Imagen desde Archivo -->
+                          <div id="contenido-imagen-archivo" class="contenido-group" style="display: none;">
+                              {{ leccion_form.imagen_archivo.label_tag }}
+                              {{ leccion_form.imagen_archivo }}
+                          </div>
+
+                          <!-- Contenido de Video URL -->
+                          <div id="contenido-video-url" class="contenido-group" style="display: none;">
+                              {{ leccion_form.video_url.label_tag }}
+                              {{ leccion_form.video_url }}
+                          </div>
+
+                          <!-- Contenido de Video desde Archivo -->
+                          <div id="contenido-video-archivo" class="contenido-group" style="display: none;">
+                              {{ leccion_form.video_archivo.label_tag }}
+                              {{ leccion_form.video_archivo }}
+                          </div>
+
+                          <!-- Contenido de Ruta -->
+                          <div id="contenido-ruta" class="contenido-group" style="display: none;">
+                              {{ leccion_form.ruta.label_tag }}
+                              {{ leccion_form.ruta }}
+                          </div>
+
+                          <div class="text-center">
+                              <button type="button" class="btn btn-secondary prev-step">Anterior</button>
+                              <button type="submit" class="btn btn-primary">Crear Lección</button>
+                          </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'JS/leccion.js' %}"></script>
+{% endblock %}

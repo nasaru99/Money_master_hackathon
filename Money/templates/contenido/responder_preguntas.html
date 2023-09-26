@@ -1,0 +1,32 @@
+{% extends "contenido/base.html" %}
+
+{% block content %}
+<h2>Responder preguntas para: {{ leccion.titulo }}</h2>
+
+<!-- Mostrar mensajes de Django -->
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div class="{{ message.tags }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    {% for pregunta in preguntas %}
+    <fieldset>
+        <legend>{{ pregunta.texto }}</legend>
+        {% for respuesta in pregunta.respuestas.all %}
+        <label>
+            <input type="radio" name="respuesta_{{ pregunta.id }}" value="{{ respuesta.id }}" required>
+            {{ respuesta.texto }}
+        </label><br>
+        {% endfor %}
+    </fieldset>
+    {% endfor %}
+    <input type="submit" value="Enviar respuestas">
+</form>
+{% endblock %}

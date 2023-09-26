@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">s
+{% endblock %}
+
+{% block content %}
+<div class="image">
+    <div class="background-image"></div>
+</div>
+<div class="login-container d-flex" style="border-radius:50px; background-color:#2e2e2e;justify-content:center;align-items:center; flex-direction:column;">
+    <div class="login-card p-4" style="padding-bottom:0 !important;">
+        <h2 style="color:#d96464; text-transform:uppercase;">¡Te extrañabamos!</h2>
+        <h2 class="text-center mb-4" style="color:white; text-transform:uppercase;">Bienvenido</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div style="display:flex; justify-content: flex-start; align-items:center; height: 40px;">
+                <input type="checkbox" id="showPassword" style="appearance:none;background-color:#2e2e2e !important; border: 2px solid #d96464; border-radius: 15px !important; width: 50px !important; height: 100%;"> 
+                <p style="margin:0; text-transform:uppercase; font-size: 20px;">ver Contraseña</p>
+            </div>
+            <div class="d-flex justify-content-center mt-3 mb-3">
+                <button type="submit" class="btn btn-primary" style="text-transform: uppercase;border-radius:100px;background:#c75e5e; border:none;">Iniciar sesión</button>
+            </div>
+        </form>
+        <div class="text-center ">
+        </p>
+    </div>
+</div>
+<a style="color:white; text-decoration:underline; margin-bottom: 20px;" href="#">¿Olvidaste tu contraseña?</a>
+
+<div style="display:flex; flex-direction:column; justify-content:center; align-items:center;">
+    <p style="color:white;">Al iniciar sesión estás aceptando nuestros</p>
+    <a style="color:white; text-decoration:underline;" href="#">Terminos y condiciones</a>
+</div>
+<hr style="width:80% !important; border-top: 1px solid white; margin:10px; height: 2px !important;">
+</div>
+
+
+{% endblock %}
+{% block js %}
+    <script>
+        const passwordInput = document.getElementById('id_password');
+        const showPasswordCheckbox = document.getElementById('showPassword');
+
+        showPasswordCheckbox.addEventListener('change', function () {
+    if (showPasswordCheckbox.checked) {
+        passwordInput.type = 'text';
+        showPassword.style.appearance = '';
+
+    } else {
+        passwordInput.type = 'password';
+        showPassword.style.appearance = 'none';
+    }
+});
+    </script>
+{%endblock%}

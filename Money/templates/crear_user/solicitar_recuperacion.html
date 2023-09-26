@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Solicitar recuperación de contraseña</h2>
+  <form method="post">
+    {% csrf_token %}
+    <label for="email">Correo Electrónico:</label>
+    <input type="email" name="email" required>
+    <button type="submit">Enviar solicitud</button>
+  </form>
+</div>
+{% endblock %}

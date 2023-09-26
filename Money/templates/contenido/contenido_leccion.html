@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Contenido de la lección: {{ leccion.titulo }}</h2>
+
+<h3>Tipo: {{ contenido.tipo }}</h3>
+
+{% if contenido.tipo == "Texto" %}
+    <p>{{ contenido.texto }}</p>
+{% elif contenido.tipo == "Imagen URL" %}
+    <img src="{{ contenido.imagen_url }}" alt="{{ leccion.titulo }}">
+{% elif contenido.tipo == "Imagen Archivo" %}
+    <img src="{{ contenido.imagen_archivo.url }}" alt="{{ leccion.titulo }}">
+{% elif contenido.tipo == "Video URL" %}
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/{{ contenido.video_url|slice:"17:28" }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+    </iframe>
+</div>
+
+{% elif contenido.tipo == "Video Archivo" %}
+    <video controls>
+        <source src="{{ contenido.video_archivo.url }}" type="video/mp4">
+    </video>
+{% elif contenido.tipo == "Ruta" %}
+    <a href="{{ contenido.ruta.url }}" download>Descargar archivo</a>
+{% elif contenido.tipo == "Otro" %}
+    <p>Contenido adicional</p>
+{% endif %}
+
+<a href="{% url 'responder_preguntas' leccion.id %}" class="btn btn-primary">Responder preguntas</a>
+{% endblock %}

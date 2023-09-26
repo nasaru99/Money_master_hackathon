@@ -1,0 +1,22 @@
+<!-- youtube_app/templates/youtube_search.html -->
+{% extends "base.html" %}
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+{% endblock %}
+{% block content %}
+<form method="get">
+    <input type="text" name="q" placeholder="Buscar en YouTube">
+    <input type="submit" value="Buscar">
+</form>
+
+{% if results %}
+    <ul>
+    {% for item in results %}
+        <li>
+            <a href="https://www.youtube.com/watch?v={{ item.id.videoId }}">{{ item.snippet.title }}</a>
+            <p>{{ item.snippet.description }}</p>
+        </li>
+    {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}

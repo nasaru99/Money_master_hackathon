@@ -1,0 +1,11 @@
+{% extends "contenido/base.html" %}
+{% block content %}
+<div class="container my-4">
+    <h2>Iniciar Transmisión</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- Puedes agregar los campos específicos que necesites para iniciar la transmisión aquí -->
+        <button type="submit" class="btn btn-primary">Iniciar</button>
+    </form>
+</div>
+{% endblock %}

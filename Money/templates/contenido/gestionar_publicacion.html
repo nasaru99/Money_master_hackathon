@@ -1,0 +1,185 @@
+{% extends "contenido/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h2>Lista de Publicaciones</h2>
+<div class="list-group">
+    {% for publicacion in todas_publicaciones %}
+        <div class="list-group-item">
+            {{ publicacion.titulo }}
+            <!-- Botón para abrir el modal -->
+            <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#contenidoModal{{publicacion.id}}">
+                Añadir Contenido
+            </button>
+        </div>
+        
+        <!-- Modal para añadir contenido a la publicación -->
+        <div class="modal fade" id="contenidoModal{{publicacion.id}}" tabindex="-1" role="dialog" aria-labelledby="contenidoModalLabel{{publicacion.id}}" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="contenidoModalLabel{{publicacion.id}}">Añadir contenido a {{ publicacion.titulo }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="post" enctype="multipart/form-data" action="{% url 'gestionar_publicacion_con_id' publicacion.id %}">
+                        {% csrf_token %}
+                        
+                        <!-- Campos del formulario ... -->
+                        <div class="modal-body">
+                            <!-- Selector de Tipo de Contenido -->
+                            <!-- ... (y otros campos similares a los que proporcionaste) ... -->
+                                <!-- Formulario para agregar Contenido a una Publicación -->
+
+
+            
+            <!-- Selector de Tipo de Contenido -->
+            <div class="form-group">
+                <label for="tipo">Tipo de Contenido:</label>
+                <select class="form-control" id="tipo" name="tipo">
+                    <option value="Texto">Texto</option>
+                    <option value="Imagen">Imagen</option>
+                    <option value="Video">Video</option>
+                    <option value="Ruta">Ruta</option>
+                </select>
+            </div>
+
+            <!-- Campo para ingresar texto -->
+            <div class="form-group">
+                <label for="texto">Texto:</label>
+                <textarea class="form-control" id="texto" name="texto" rows="3"></textarea>
+            </div>
+
+            <!-- Campo para cargar una imagen -->
+            <div class="form-group">
+                <label for="imagen">Imagen:</label>
+                <input type="file" class="form-control-file" id="imagen" name="imagen">
+            </div>
+
+            <!-- Campo para ingresar URL del video -->
+            <div class="form-group">
+                <label for="video_url">URL del Video:</label>
+                <input type="url" class="form-control" id="video_url" name="video_url">
+            </div>
+
+            <!-- Campo para cargar una ruta (archivo) -->
+            <div class="form-group">
+                <label for="ruta">Ruta (archivo):</label>
+                <input type="file" class="form-control-file" id="ruta" name="ruta">
+            </div>
+
+            <!-- Botón para enviar el formulario -->
+            <button type="submit" class="btn btn-primary">Guardar Contenido</button>
+
+
+                            <!-- Botón para enviar el formulario -->
+                            <button type="submit" class="btn btn-primary">Guardar Contenido</button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+</div>
+<br>
+
+<h2>Crear Publicación</h2>
+
+<!-- Botón para abrir el modal de Crear Publicación -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createPublicacionModal">Crear</button>
+
+<!-- Modal Crear Publicación -->
+<div class="modal fade" id="createPublicacionModal" tabindex="-1" aria-labelledby="createPublicacionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createPublicacionModalLabel">Crear Publicación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Formulario para crear una publicación -->
+                <form method="post" enctype="multipart/form-data" action="#">
+                    {% csrf_token %}
+                    <!-- Muestra los errores del formulario -->
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <ul>
+                                {% for field, errors in form.errors.items %}
+                                    {% for error in errors %}
+                                        <li>{{ field }}: {{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                    <!-- ... tus campos de formulario para publicación aquí ... -->
+                    <label for="titulo">Título:</label>
+                    <input type="text" id="titulo" name="titulo" required>
+                    <br>
+                
+                    <label for="descripcion">Descripción:</label>
+                    <textarea id="descripcion" name="descripcion" rows="5" required></textarea>
+                    <br>
+                
+                    <!-- Para contenidos, es necesario que proporciones una lista de contenidos de alguna manera.
+                    Por ahora, solo te proporciono un ejemplo de cómo se vería un checkbox -->
+                    <label>Contenidos:</label>
+                    <input type="checkbox" id="contenido1" name="contenidos" value="contenido1">
+                    <label for="contenido1">Contenido 1</label>
+                    <!-- Repite para todos los contenidos -->
+                    <br>
+                
+                    <label for="suscripcion_requerida">Suscripción requerida:</label>
+                    <select id="suscripcion_requerida" name="suscripcion_requerida">
+                        <!-- Aquí deberías llenar las opciones basado en los tipos de suscripciones disponibles -->
+                        <option value="tipo1">Tipo de suscripción 1</option>
+                        <!-- ... -->
+                    </select>
+                    <br>
+                
+                    <label for="visibilidad">Visibilidad:</label>
+                    <select id="visibilidad" name="visibilidad">
+                        <option value="Publico">Público</option>
+                        <option value="Privado">Privado</option>
+                        <option value="SoloAmigos">Solo Amigos</option>
+                        <option value="Suscriptores">Solo Suscriptores</option>
+                    </select>
+                    <br>
+                
+                    <label for="estado">Estado:</label>
+                    <select id="estado" name="estado">
+                        <option value="Borrador">Borrador</option>
+                        <option value="Publicado">Publicado</option>
+                        <option value="Archivado">Archivado</option>
+                    </select>
+                    <br>
+                
+                    <!-- Similar a contenidos, necesitas proporcionar una lista de categorías y etiquetas. Solo doy un ejemplo -->
+                    <label>Categorías:</label>
+                    <input type="checkbox" id="categoria1" name="categorias" value="categoria1">
+                    <label for="categoria1">Categoría 1</label>
+                    <!-- Repite para todas las categorías -->
+                    <br>
+                
+                    <label>Etiquetas:</label>
+                    <input type="checkbox" id="etiqueta1" name="etiquetas" value="etiqueta1">
+                    <label for="etiqueta1">Etiqueta 1</label>
+                    <!-- Repite para todas las etiquetas -->
+                    <br>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

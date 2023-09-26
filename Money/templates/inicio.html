@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/inicio.css' %}">
+{% endblock %}
+
+{% block content %}
+
+
+<div class="search-bar">
+    <select>
+        <option value="all">Todas las categorias</option>
+        <!-- Otras categorías aquí -->
+    </select>
+    <input type="text" placeholder="¿Qué estás buscando?">
+    <button>Buscar</button>
+</div>
+
+<div class="courses">
+    <div class="course">
+        <h3>Transmisión en vivo</h3>
+        <a href="#">VER MÁS</a>
+    </div>
+    <div class="course">
+        <h3>Curso en línea: Para emprendedores</h3>
+        <a href="#">VER MÁS</a>
+    </div>
+    <div class="course">
+        <h3>Curso en línea: Para empresarios</h3>
+        <a href="#">VER MÁS</a>
+    </div>
+    <div class="course">
+        <h3>Curso en línea: Para Jovenes</h3>
+        <a href="#">VER MÁS</a>
+    </div>
+    <div class="course">
+        <h3>Mentoría personalizada</h3>
+        <a href="#">VER MÁS</a>
+    </div>
+    <div class="course">
+        <h2>Curso en línea: </h2>
+        <h4>Mi primera inversión</h4>
+        <a href="#">VER MÁS</a>
+    </div>
+</div>
+
+<div class="content-section">
+    <div class="main-content">
+        <div class="content-card">
+            <h2>ARTÍCULOS</h2>
+            
+            <!-- Aquí van los artículos -->
+        </div>       
+    </div>
+    <div class="right-section">
+        <div class="content-card">
+            <h2>VIDEOS</h2>
+            <!-- Aquí van los videos -->
+        </div>        
+    </div>
+    <div class="right-section">
+        <div class="content-card">
+            <h2>PODCASTS</h2>
+            <!-- Aquí van los podcasts -->
+        </div>        
+    </div>
+    <div class="right-section">
+        <div class="content-card">
+            <h2>FORO</h2>
+            <!-- Aquí va el foro -->
+        </div>        
+    </div>
+</div>
+
+<div class="content-section styled-section">
+    <div class="right-section">
+        <p>Te recomendamos leer:</p>
+        <div class="content-card">
+            
+            <div class="article-card">
+                <img src="https://i.pinimg.com/236x/ca/c0/05/cac005615371cef444f44d4dd97c34c9.jpg" alt="Imagen del artículo">
+                <div class="article-details">
+                    <p>Fecha de publicación: 01/01/2023</p>
+                    <p>Autor: Juan Pérez</p>
+                    <a href="#">El impacto de la inflación en tus ahorros</a>
+                </div>
+            </div>
+            <!-- Repite la estructura para los otros artículos -->
+        </div>
+    </div>
+    <div class="right-section">
+        <h2>TRENDINGS</h2>
+        <div class="content-card">
+            <div class="article-card">
+                <img src="https://i.pinimg.com/236x/ca/c0/05/cac005615371cef444f44d4dd97c34c9.jpg" alt="Imagen del artículo">
+                <div class="article-details">
+                    <p>Fecha de publicación: 02/01/2023</p>
+                    <p>Autor: María López</p>
+                    <a href="#">El auge de las criptomonedas</a>
+                </div>
+            </div>
+            <!-- Repite la estructura para los otros trendings -->
+        </div>
+    </div>
+</div>
+
+
+<div class="content-section styled-section">
+    <div class="right-section">
+        <p>Ultimos artículos:</p>
+        <div class="content-card">           
+            <ul>
+                <li>Beneficios de tener un seguro de vida</li>
+                <li>¿Cómo calcular tu score crediticio?</li>
+                <li>Consejos para negociar tu salario</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="content-section styled-section">
+    <div class="right-section">
+        <p>Videos destacados:</p>
+        <div class="content-card">
+            
+            <ul>
+                <li>Tutorial: Uso de plataformas de inversión</li>
+                <li>Conferencia: El futuro de la banca digital</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="content-section styled-section">
+    <div class="right-section">
+        <p>Podcasts recomendados:</p>
+        <div class="content-card">            
+            <ul>
+                <li>Episodio 12: La importancia de la educación financiera</li>
+                <li>Episodio 13: Entrevista con experto en finanzas</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <h2>Suscríbete a nuestro Money MasterD</h2>
+    <p>Todos los consejos, cursos financieros directo a tu correo además de noticias, eventos y contenidos especiales.</p>
+    <h3>Síguenos</h3>
+    <!-- Aquí van los logos de las redes sociales -->
+</div>
+
+{% endblock %}

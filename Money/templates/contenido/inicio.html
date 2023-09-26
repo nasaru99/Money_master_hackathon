@@ -1,0 +1,67 @@
+{% extends "contenido/base.html" %}
+{% block content %}
+<div class="container">
+    <ul class="nav nav-tabs custom-tab" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="todos-tab" data-toggle="tab" href="#todos" role="tab">Todos los cursos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="enprogreso-tab" data-toggle="tab" href="#enprogreso" role="tab">Cursos en progreso</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="listadeseos-tab" data-toggle="tab" href="#listadeseos" role="tab">Lista de deseos</a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="todos" role="tabpanel">
+            <!-- Aquí se mostrarán todos los cursos -->
+            {% for curso in cursos %}
+            <div class="card">
+                <img src="{{ curso.imagen.url }}" class="card-img-top" alt="{{ curso.titulo }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ curso.titulo }}</h5>
+                    <p class="card-text">{{ curso.descripcion|truncatechars:100 }}</p>
+                    <!-- Barra de progreso -->
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: {{ curso.lecciones_completadas }}%;" aria-valuenow="{{ curso.lecciones_completadas }}" aria-valuemin="0" aria-valuemax="100">{{ curso.lecciones_completadas }}%</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="tab-pane fade" id="enprogreso" role="tabpanel">
+            <!-- Aquí se mostrarán los cursos en progreso -->
+            {% for inscripcion in inscripciones_en_progreso %}
+            <div class="card">
+                <img src="{{ inscripcion.curso.imagen.url }}" class="card-img-top" alt="{{ inscripcion.curso.titulo }}">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{% url 'lecciones_curso' inscripcion.curso.id %}">{{ inscripcion.curso.titulo }}</a>
+                    </h5>                    
+                    <p class="card-text">{{ inscripcion.curso.descripcion|truncatechars:100 }}</p>
+                    <!-- Barra de progreso -->
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: {{ inscripcion.progreso }}%;" aria-valuenow="{{ inscripcion.progreso }}" aria-valuemin="0" aria-valuemax="100">{{ inscripcion.progreso }}%</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="tab-pane fade" id="listadeseos" role="tabpanel">
+            <!-- Aquí se mostrarán los cursos en la lista de deseos del usuario -->
+            {% for curso in cursos_deseados %}
+            <div class="card">
+                <img src="{{ curso.imagen.url }}" class="card-img-top" alt="{{ curso.titulo }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ curso.titulo }}</h5>
+                    <p class="card-text">{{ curso.descripcion|truncatechars:100 }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

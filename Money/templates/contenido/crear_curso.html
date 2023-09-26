@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h2>Crear un nuevo curso</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!-- Paso 1: Título -->
+                        <div id="paso-1" class="form-step">
+                            <div class="form-group">
+                                <label for="{{ curso_form.titulo.id_for_label }}">Título del Curso</label>
+                                {{ curso_form.titulo }}
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary next-step">Siguiente</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Paso 2: Descripción -->
+                        <div id="paso-2" class="form-step">
+                            <div class="form-group">
+                                <label for="{{ curso_form.descripcion.id_for_label }}">Descripción</label>
+                                {{ curso_form.descripcion }}
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-secondary prev-step">Anterior</button>
+                                <button type="button" class="btn btn-primary next-step">Siguiente</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Paso 3: Precio e Imagen -->
+                        <div id="paso-3" class="form-step">
+                            <div class="form-group">
+                                <label for="{{ curso_form.precio.id_for_label }}">Precio</label>
+                                {{ curso_form.precio }}
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ curso_form.imagen.id_for_label }}">Imagen del Curso</label>
+                                {{ curso_form.imagen }}
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-secondary prev-step">Anterior</button>
+                                <button type="submit" class="btn btn-primary">Crear Curso</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // JavaScript para la navegación entre pasos
+    const formSteps = document.querySelectorAll('.form-step');
+    const prevStepButtons = document.querySelectorAll('.prev-step');
+    const nextStepButtons = document.querySelectorAll('.next-step');
+
+    // Ocultar todos los pasos excepto el primero
+    formSteps.forEach((step, index) => {
+        if (index === 0) {
+            step.style.display = 'block';
+        } else {
+            step.style.display = 'none';
+        }
+    });
+
+    // Función para mostrar el siguiente paso
+    function showNextStep(currentStep) {
+        currentStep.style.display = 'none';
+        const nextIndex = Array.from(formSteps).indexOf(currentStep) + 1;
+        if (nextIndex < formSteps.length) {
+            formSteps[nextIndex].style.display = 'block';
+        }
+    }
+
+    // Función para mostrar el paso anterior
+    function showPrevStep(currentStep) {
+        currentStep.style.display = 'none';
+        const prevIndex = Array.from(formSteps).indexOf(currentStep) - 1;
+        if (prevIndex >= 0) {
+            formSteps[prevIndex].style.display = 'block';
+        }
+    }
+
+    // Event listeners para los botones de navegación
+    prevStepButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const currentStep = button.closest('.form-step');
+            showPrevStep(currentStep);
+        });
+    });
+
+    nextStepButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const currentStep = button.closest('.form-step');
+            showNextStep(currentStep);
+        });
+    });
+</script>
+{% endblock %}

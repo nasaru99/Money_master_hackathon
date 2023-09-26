@@ -1,0 +1,436 @@
+{% extends "contenido/base.html" %}
+{% load static %}
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/perfiles.css' %}">
+<style>
+ /* Estilo general para el perfil de usuario */
+.container {
+    margin-top: 20px;
+}
+
+/* Estilo para la sección izquierda */
+.left-section {
+    text-align: center;
+}
+
+.profile-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border: 3px solid #0d6efd;
+    border-radius: 50%;
+}
+
+.username {
+    margin-top: 10px;
+    font-size: 24px;
+    color: #0d6efd;
+}
+
+/* Estilo para la sección derecha */
+.cover-photo {
+    margin-bottom: 20px;
+}
+
+/* Estilo para la información básica */
+.lead {
+    font-size: 18px;
+}
+
+/* Estilo para las pestañas */
+.custom-tab .nav-item {
+    margin-right: 10px;
+}
+
+.custom-tab .nav-link {
+    color: #0d6efd;
+    font-weight: bold;
+    border: none;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+    transition: border-color 0.3s ease;
+}
+
+.custom-tab .nav-link:hover {
+    border-color: #0d6efd;
+}
+
+/* Estilo para la lista de elementos en las pestañas */
+.list-group-item {
+    font-size: 16px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Estilo para los elementos activos en las pestañas */
+.nav-link.active {
+    border-color: #0d6efd;
+}
+
+/* Estilos para las secciones izquierda y derecha */
+.left {
+    width: 20%;
+    background-color: blue;
+    overflow-y: auto;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.right {
+    width: 20%;
+    background-color: green;
+    overflow-y: auto;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+/* Añade márgenes para el contenido principal */
+.main-content {
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+/* Estilo general */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+/* Foto de portada */
+.img-fluid {
+    max-height: 300px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Foto de perfil */
+.img-thumbnail {
+    max-width: 150px;
+    border-radius: 50%;
+    border: 3px solid white;
+    position: relative;
+    top: -75px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Nombre y correo del usuario */
+h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #4b4f56;
+}
+
+i.fas.fa-user-circle {
+    font-size: 1.2rem;
+    vertical-align: middle;
+    color: #4b4f56;
+}
+
+p {
+    color: #616770;
+}
+
+/* Botones */
+button.btn {
+    margin-right: 10px;
+    border-radius: 8px;
+}
+
+button.btn-primary {
+    background-color: #1877f2;
+    border-color: #1877f2;
+}
+
+button.btn-secondary {
+    background-color: #e4e6eb;
+    color: #050505;
+    border-color: #ccd0d5;
+}
+
+/* Menú de navegación del perfil */
+.nav-pills .nav-link {
+    border-radius: 8px;
+    color: #4b4f56;
+    margin-right: 10px;
+}
+
+.nav-pills .nav-link.active {
+    background-color: #1877f2;
+    color: white;
+}
+
+/* Detalles del perfil */
+.card {
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    color: #4b4f56;
+}
+
+.card-text {
+    color: #616770;
+}
+
+/* Publicaciones */
+.card-img-top {
+    max-height: 150px;
+    object-fit: cover;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.card-body h6 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #4b4f56;
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <!-- Foto de portada -->
+    <div class="row">
+        <div class="col-12">
+            <img src="{{ perfil_usuario.foto_portada.url }}" alt="Foto de portada" class="img-fluid">
+        </div>
+    </div>
+
+    <div class="row mt-4 align-items-center">
+        <!-- Foto de perfil -->
+        <div class="col-md-3">
+            <img src="{{ perfil_usuario.foto_perfil.url }}" alt="Foto de perfil" class="img-thumbnail">
+        </div>
+
+        <!-- Nombre y correo del usuario -->
+        <div class="col-md-6">
+            <h2>{{ perfil_usuario.usuario.first_name }} {{ perfil_usuario.usuario.last_name }} <i class="fas fa-user-circle"></i></h2>
+            <p>{{ perfil_usuario.usuario.email }}</p>
+        </div>
+
+        <!-- Botones -->
+        <div class="col-md-3 text-right">
+            <button class="btn btn-primary">Agregar Curso</button>
+            <button class="btn btn-secondary">Editar Perfil</button>
+        </div>
+    </div>
+
+    <!-- Línea divisoria -->
+    <hr>
+
+    <!-- Menú de navegación del perfil -->
+    <div class="row mt-2">
+        <div class="col-12">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Publicaciones</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Información</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Amigos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Cursos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Mensajes</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Detalles del perfil y publicaciones -->
+    <div class="row mt-4">
+        <!-- Biografía y detalles adicionales -->
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Presentación</h5>
+                    <p class="card-text">{{ perfil_usuario.biografia }}</p>
+                    <button class="btn btn-outline-primary">Editar presentación</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Más detalles</h5>
+                    <p class="card-text">Trabajo: {{ perfil_usuario.detalle.trabajos }}</p>
+                    <p class="card-text">Estudio: {{ perfil_usuario.detalle.estudios }}</p>
+                    <p class="card-text">Ubicacion: {{ perfil_usuario.detalle.ubicacion }}</p>
+                </div>
+            </div>
+            <!-- Mensajería -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Mensajería</h5>
+                    
+                    <!-- Lista de grupos de chat y amigos -->
+                    <div class="row">
+                        <div class="col-md-4">
+                            <!-- Lista de grupos de chat -->
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    Tus Grupos
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group">
+                                        {% for grupo in grupos %}
+                                            <li class="list-group-item">
+                                                <a href="#" class="chat-link" data-toggle="modal" data-target="#grupoModal{{ grupo.id }}">
+                                                    {{ grupo.nombre }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- Lista de amigos -->
+                            <div class="card">
+                                <div class="card-header">
+                                    Tus Amigos
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group">
+                                        {% for amigo in amigos %}
+                                        <li class="list-group-item">
+                                            <a href="#" class="chat-link" data-toggle="modal" data-target="#amigoModal{{ amigo.id }}">
+                                                {% if amigo.usuario1 == request.user %}
+                                                    {{ amigo.usuario2.username }}
+                                                {% else %}
+                                                    {{ amigo.usuario1.username }}
+                                                {% endif %}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                    
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <!-- Ventana de chat (se muestra en el modal) -->
+                            {% for grupo in grupos %}
+                                <div class="modal fade" id="grupoModal{{ grupo.id }}" tabindex="-1" role="dialog" aria-labelledby="grupoModal{{ grupo.id }}Label" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <img src="" alt="{{ grupo.nombre }}" class="chat-avatar">
+                                                <h5 class="modal-title ml-2" id="grupoModal{{ grupo.id }}Label">{{ grupo.nombre }}</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <!-- Mensajes del grupo -->
+                                                <div class="chat-box">
+                                                    {% for mensaje in mensajes %}
+                                                        {% if mensaje.grupo == grupo %}
+                                                            <div class="card {% if mensaje.emisor == request.user %}sent{% else %}received{% endif %}">
+                                                                <div class="card-body">
+                                                                    <h6 class="card-title">{{ mensaje.emisor.username }}:</h6>
+                                                                    <p class="card-text">{{ mensaje.texto }}</p>
+                                                                    <small>{{ mensaje.fecha_mensaje }}</small>
+                                                                </div>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                                <!-- Formulario para enviar mensajes -->
+                                                <form method="post" action="{% url 'enviar_mensaje' %}" class="chat-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="grupo.id" value="{{ grupo.grupo_id }}">
+                                                    <input type="hidden" name="receptor_id" value="{{ amigo.usuario2.id }}">
+                                                    <div class="input-group">
+                                                        <textarea name="mensaje" rows="3" placeholder="Escribe un mensaje..." class="form-control"></textarea>
+                                                        <div class="input-group-append">
+                                                            <button type="submit" class="btn btn-primary">Enviar</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <!-- Ventana de chat para amigos -->
+                            {% for amigo in amigos %}
+                                <div class="modal right fade" id="amigoModal{{ amigo.id }}" tabindex="-1" role="dialog" aria-labelledby="amigoModal{{ amigo.id }}Label" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-vertical" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <img src="" alt="{{ amigo.usuario2.username }}" class="chat-avatar">
+                                                <h5 class="modal-title ml-2" id="amigoModal{{ amigo.id }}Label">{{ amigo.usuario2.username }}</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <!-- Mensajes con el amigo -->
+                                                <div class="chat-box">
+                                                    {% for mensaje in mensajes_amigos %}
+                                                        {% if request.user == mensaje.emisor and amigo.usuario2 == mensaje.receptor or request.user == mensaje.receptor and amigo.usuario2 == mensaje.emisor %}
+                                                            <div class="card {% if mensaje.emisor == request.user %}sent{% else %}received{% endif %}">
+                                                                <div class="card-body">
+                                                                    <h6 class="card-title">{{ mensaje.emisor.username }}:</h6>
+                                                                    <p class="card-text">{{ mensaje.texto }}</p>
+                                                                </div>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                                <!-- Formulario para enviar mensajes al amigo -->
+                                                <form method="post" action="{% url 'enviar_mensaje' %}" class="chat-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="receptor_id" value="{{ amigo.usuario2.id }}">
+                                                    <div class="input-group">
+                                                        <textarea name="mensaje" rows="3" placeholder="Escribe un mensaje..." class="form-control"></textarea>
+                                                        <div class="input-group-append">
+                                                            <button type="submit" class="btn btn-primary">Enviar</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Publicaciones -->
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <img src="{{ perfil_usuario.foto_perfil.url }}" alt="Foto de perfil" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">Publicaciones</h5>
+                    {% for publicacion in publicaciones %}
+                        <div class="card mt-3">
+                            <div class="card-body">
+                                <h6 class="card-title">Titulo: {{ publicacion.titulo }}</h6>
+                                <p class="card-text">Descripcion: {{ publicacion.descripcion|truncatewords:20 }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

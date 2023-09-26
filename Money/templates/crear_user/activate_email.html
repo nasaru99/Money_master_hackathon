@@ -1,0 +1,12 @@
+{% autoescape off %}
+Hola {{ user.username }},
+
+Por favor haz clic en el siguiente enlace para activar tu cuenta:
+
+{{ request.scheme }}://{{ domain }}{{ request.get_host }}{% url 'activate_account' token=token %}
+
+Si no solicitaste este correo, por favor ignóralo.
+
+Saludos,
+HotelHub
+{% endautoescape %}
