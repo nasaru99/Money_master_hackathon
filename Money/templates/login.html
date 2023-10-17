@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load static %}
+{% load socialaccount %}
 
 
 {% block extra_head %}
@@ -30,11 +31,13 @@
         </p>
     </div>
 </div>
-<a style="color:white; text-decoration:underline; margin-bottom: 20px;" href="#">¿Olvidaste tu contraseña?</a>
+<a style="color:white; text-decoration:underline; margin-bottom: 20px;" href="{% url 'solicitar_recuperacion' %}">¿Olvidaste tu contraseña?</a>
 
 <div style="display:flex; flex-direction:column; justify-content:center; align-items:center;">
     <p style="color:white;">Al iniciar sesión estás aceptando nuestros</p>
     <a style="color:white; text-decoration:underline;" href="#">Terminos y condiciones</a>
+    <a href="{% provider_login_url 'google' %}">Iniciar sesión con Google</a>
+
 </div>
 <hr style="width:80% !important; border-top: 1px solid white; margin:10px; height: 2px !important;">
 </div>

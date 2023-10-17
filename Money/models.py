@@ -124,9 +124,14 @@ class PerfilUsuario(models.Model):
     numero_videos_publicados = models.PositiveIntegerField(default=0)
     ubicacion = models.CharField(max_length=100, null=True, blank=True)
     fecha_nacimiento = models.DateField(null=True, blank=True)
+    GENERO_OPCIONES = [
+        ('Femenino', 'Femenino'),
+        ('Masculino', 'Masculino'),
+        ('Otro', 'Otro'),
+    ]
     genero = models.CharField(
         max_length=10, 
-        choices=[('masculino', 'Masculino'), ('femenino', 'Femenino'), ('otro', 'Otro')],
+        choices=GENERO_OPCIONES,
         null=True, blank=True
     )
     lista_amigos_visible = models.BooleanField(default=True) 
@@ -145,7 +150,7 @@ class PerfilUsuario(models.Model):
         return self.usuario.username
 
 class DetallePerfilUsuario(models.Model):
-    perfil = models.OneToOneField(PerfilUsuario, on_delete=models.CASCADE, related_name='detalle')
+    perfil = models.OneToOneField(User, on_delete=models.CASCADE, related_name='detalle')
     trabajos = models.TextField(null=True, blank=True)  # Puedes considerar usar un modelo separado para trabajos si necesitas más detalles
     estudios = models.TextField(null=True, blank=True)  # Lo mismo para estudios
     ubicacion = models.CharField(max_length=100, null=True, blank=True)
@@ -153,7 +158,7 @@ class DetallePerfilUsuario(models.Model):
     enlace_instagram = models.URLField(max_length=500, null=True, blank=True)
     enlace_youtube = models.URLField(max_length=500, null=True, blank=True)
     enlace_otras = models.URLField(max_length=500, null=True, blank=True)  # Puedes considerar usar un modelo separado para múltiples enlaces
-
+    cuenta_google = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='perfil_google')
     def __str__(self):
         return f"Detalle de {self.perfil.usuario.username}"
 
@@ -329,12 +334,16 @@ class Amigo(models.Model):
 
 # Gestión de Pagos
 class Pago(models.Model):
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)  # Añadido
     monto = models.DecimalField(max_digits=10, decimal_places=2)
     fecha_pago = models.DateTimeField(auto_now_add=True)
     descripcion = models.TextField(null=True, blank=True)
     metodo_pago = models.CharField(max_length=50)
     estado = models.CharField(max_length=15, choices=[('Pendiente', 'Pendiente'), ('Completado', 'Completado'), ('Rechazado', 'Rechazado')], default='Pendiente')
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.usuario.username} - {self.curso.titulo}'
 
 class Amistad(models.Model):
     usuario1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='amistades_iniciadas')

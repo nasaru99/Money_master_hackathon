@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from .models import TokenVerificacionCorreo, PerfilUsuario, Publicacion, Comentario, MensajePrivado, Pago
 import uuid
 from django.contrib.auth.forms import UserCreationForm
-
+from django.forms import widgets
 from django import forms
 from .models import Publicacion, Contenido
 from .models import Curso, Leccion
@@ -49,10 +49,21 @@ class RegistroForm(UserCreationForm):
         model = User
         fields = ('username', 'email', 'password1', 'password2')
 
+class CustomRadioSelect(forms.RadioSelect):
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        # Eliminar la opción vacía
+        context['widget']['optgroups'] = [group for group in context['widget']['optgroups'] if group[0] or group[1]]
+        return context
 class PerfilUsuarioForm(forms.ModelForm):
     class Meta:
         model = PerfilUsuario
         fields = ['nivel_educativo', 'ubicacion', 'fecha_nacimiento', 'genero', 'codigo_pais', 'numero_telefono']
+        widgets = {
+            'genero': forms.RadioSelect(choices=[('Femenino', 'Femenino'), ('Masculino', 'Masculino'), ('Otro', 'Otro')]),
+            'fecha_nacimiento': widgets.DateInput(attrs={'type': 'date'}),
+            'nivel_educativo': forms.RadioSelect(choices=[('principiante', 'Principiante'), ('intermedio', 'Intermedio'), ('avanzado', 'Avanzado')]),
+        }
 class CustomUserCreationForm(UserCreationForm):
     username = forms.CharField(
         max_length=30,

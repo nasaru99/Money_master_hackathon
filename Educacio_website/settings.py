@@ -46,6 +46,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Money',
     'crispy_forms',
+    'social_django',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     
     
 ]
@@ -62,7 +67,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-]
+]   
 
 ROOT_URLCONF = 'Educacio_website.urls'
 
@@ -138,6 +143,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.AllowAllUsersModelBackend',  # Permite autenticación por correo electrónico
+    'allauth.account.auth_backends.AuthenticationBackend',
+
 ]
 
 LOGOUT_REDIRECT_URL = 'login'
@@ -165,3 +174,17 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATICFILES_DIRS= ['C:/Users/Asdrual Lezama/Downloads/Educacionl_website/Educacionl_website/hotel_website/static']
 
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '711545168062-uvq9opsk6jol216rhsikbnt3r6rg86jf.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': '711545168062-uvq9opsk6jol216rhsikbnt3r6rg86jf.apps.googleusercontent.com","project_id":"shaped-epigram-364806',
+            'secret': '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',
+            'key': 'AIzaSyDwFTYOkq4X43rnBvoeXRE9dtzSrlyt72A',
+        },
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+    }
+}

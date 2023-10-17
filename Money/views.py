@@ -1,56 +1,60 @@
+# Django built-in imports
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse, HttpResponseBadRequest
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.core.mail import send_mail
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from functools import wraps
-from datetime import timedelta
-from .models import Curso, Leccion, InscripcionCurso, ProgresoLeccion
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import MensajePrivado, GrupoChat
-from django.contrib.auth.models import User
+from django.contrib import messages
+from django.db.models import Q
+from django.contrib import messages  # Importa el sistema de mensajes
+from django.core.mail import send_mail  # Importa la función send_mail
+from django.template.loader import render_to_string  # Importa la función render_to_string
+from django.contrib.sites.shortcuts import get_current_site  # Importa la función get_current_site
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views import View
+from django.contrib import messages
+from .models import Pago, Curso
 from django.contrib.auth.decorators import login_required
-from .models import Amigo,Amistad
-from django.shortcuts import render
-from .services import search_youtube
-import datetime
-from django.shortcuts import render, redirect
-from .models import Curso, InscripcionCurso, ProgresoLeccion
-from .forms import CursoForm, LeccionForm
+from django.utils.decorators import method_decorator
 
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, PerfilUsuarioForm
-from django.contrib.auth import login
-
-from django.contrib.auth import login
-from django.shortcuts import redirect
-from django.contrib.sites.shortcuts import get_current_site
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from django.views.generic import CreateView
-from django.urls import reverse_lazy
-from .models import TokenVerificacionCorreo, PerfilUsuario
-# ...
-from .forms import (CustomUserCreationForm, TokenVerificacionCorreoForm, PublicacionForm, 
-                    LoginForm, ContenidoForm)
-from .models import (TokenVerificacionCorreo, PerfilUsuario, Rol, Permiso, RolPermiso,
-                     TipoSuscripcion, Suscripcion, TipoPublicacion, Categoria, Etiqueta, Publicacion, Contenido,
-                     Comentario, GrupoChat, UsuarioGrupo, TipoMensaje, MensajePrivado, EstadoLectura, Pago,RespuestaUsuario,Pregunta,Respuesta)
-import uuid
-from .forms import CustomUserCreationForm
-
-from django.shortcuts import render
-from django.db.models import Q  # Agrega esta línea para importar la clase Q
-from .models import GrupoChat, Amigo, MensajePrivado
 from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
+from django.views import View
+from .models import Amistad
+from django.contrib.auth.models import User
+from django.shortcuts import render, get_object_or_404
+from django.views import View
+from django.http import JsonResponse
+from django.contrib.auth.models import User
+from .models import Amistad
+from django.db.models import Q
+
+# Local models
+from .models import (
+    Curso, Leccion, InscripcionCurso, ProgresoLeccion, MensajePrivado, GrupoChat, Amigo, Amistad,
+    TokenVerificacionCorreo, PerfilUsuario, Rol, Permiso, RolPermiso, TipoSuscripcion, Suscripcion,
+    TipoPublicacion, Categoria, Etiqueta, Publicacion, Contenido, Comentario, UsuarioGrupo, TipoMensaje,
+    EstadoLectura, Pago, RespuestaUsuario, Pregunta, Respuesta
+)
+
+# Local forms
+from .forms import (
+    CursoForm, LeccionForm, CustomUserCreationForm, PerfilUsuarioForm, TokenVerificacionCorreoForm,
+    PublicacionForm, LoginForm, ContenidoForm
+)
+
+# Other imports
+from functools import wraps
+import datetime
+import uuid
+from .services import search_youtube
 
 def trabajador_required(f):
     @wraps(f)
@@ -64,6 +68,36 @@ def trabajador_required(f):
 
 # Inicio
 
+from django.shortcuts import render
+from django.db.models import Q
+from .models import GrupoChat, Contenido, Publicacion, DetallePerfilUsuario, PerfilUsuario, Curso, Leccion
+
+
+def buscar(request):
+    query = request.GET.get('q')
+    resultados = []
+
+    if query:
+        # Búsqueda en distintos modelos
+        grupos = GrupoChat.objects.filter(nombre__icontains=query)
+        contenidos = Contenido.objects.filter(texto__icontains=query)
+        publicaciones = Publicacion.objects.filter(Q(titulo__icontains=query) | Q(descripcion__icontains=query))
+        perfiles = PerfilUsuario.objects.filter(usuario__username__icontains=query)
+        cursos = Curso.objects.filter(Q(titulo__icontains=query) | Q(descripcion__icontains=query))
+        lecciones = Leccion.objects.filter(titulo__icontains=query)
+
+        # Agregar resultados a la lista
+        resultados.extend(grupos)
+        resultados.extend(contenidos)
+        resultados.extend(publicaciones)
+        resultados.extend(perfiles)
+        resultados.extend(cursos)
+        resultados.extend(lecciones)
+
+    return render(request, 'buscar.html', {'resultados': resultados})
+
+
+
 def index(request):
     return render(request, 'inicio.html')
 
@@ -71,19 +105,26 @@ def index(request):
 def index_contenido(request):
      # Todos los cursos
     cursos = Curso.objects.all()
-
     # Cursos en progreso del usuario actual
     inscripciones_en_progreso = InscripcionCurso.objects.filter(usuario=request.user, completado=False)
-
     # Cursos en la lista de deseos del usuario actual
-   
+    usuario = request.user
+    amigos = Amistad.objects.filter(
+        (Q(usuario1=usuario) | Q(usuario2=usuario)) & 
+        Q(es_aceptada=True))
+    lista_amigos = [amigo.usuario1 if amigo.usuario2 == usuario else amigo.usuario2 for amigo in amigos]
+    
+    # Obtener las publicaciones del usuario actual y de sus amigos
+    publicaciones = Publicacion.objects.filter(
+        Q(usuario=usuario) | 
+        Q(usuario__in=lista_amigos)
+    ).order_by('-fecha_publicacion')
 
     context = {
         'cursos': cursos,
         'inscripciones_en_progreso': inscripciones_en_progreso,
-        
+        'publicaciones': publicaciones,
     }
-
     return render(request, 'contenido/inicio.html', context)
 
 
@@ -116,7 +157,6 @@ def contenido_leccion(request, leccion_id):
     }
     return render(request, 'contenido/contenido_leccion.html', context)
 
-from django.contrib import messages
 
 @login_required
 def responder_preguntas(request, leccion_id):
@@ -175,7 +215,7 @@ def enviar_mensaje(request):
         
         mensaje = MensajePrivado(texto=mensaje_texto, emisor=request.user, receptor=receptor, tipo=tipo_mensaje, grupo=grupo)
         mensaje.save()
-
+      
     return redirect('perfil')
 
 
@@ -226,6 +266,58 @@ def comentar_publicacion(request):
 
 
 # Gestion de contenido
+from django.views.decorators.http import require_POST
+@login_required
+@require_POST  # Asegúrate de que sólo se aceptan solicitudes POST
+def enviar_solicitud_amistad(request, username):
+    print("usuario",username)
+    usuario2 = get_object_or_404(User, username=username)
+    if Amistad.objects.filter(usuario1=request.user, usuario2=usuario2).exists():
+        messages.error(request, 'Ya has enviado una solicitud de amistad a este usuario.')
+    else:
+        Amistad.objects.create(usuario1=request.user, usuario2=usuario2)
+        messages.success(request, 'Solicitud de amistad enviada.')
+    return redirect('perfil')
+
+
+@login_required
+def aceptar_solicitud_amistad(request, solicitud_id):
+    solicitud = get_object_or_404(Amistad, pk=solicitud_id)
+    if solicitud.usuario2 == request.user and not solicitud.es_aceptada:
+        solicitud.es_aceptada = True
+        solicitud.save()
+        messages.success(request, f'Ahora eres amigo de {solicitud.usuario1.username}.')
+    else:
+        messages.error(request, 'No puedes aceptar esta solicitud.')
+    return redirect('perfil')
+
+
+
+
+@method_decorator(login_required, name='dispatch')
+class PagoCursoView(View):
+    template_name = 'contenido/pagar_curso.html'
+
+    def get(self, request, curso_id, *args, **kwargs):
+        curso = get_object_or_404(Curso, id=curso_id)
+        return render(request, self.template_name, {'curso': curso})
+
+    def post(self, request, curso_id, *args, **kwargs):
+        curso = get_object_or_404(Curso, id=curso_id)
+        Pago.objects.create(
+            curso=curso,
+            usuario=request.user,
+            monto=curso.precio,
+            metodo_pago='Simulado',
+            estado='Completado',
+            descripcion=f'Pago de {curso.titulo}'
+        )
+        return JsonResponse({'success': True, 'message': 'Pago realizado con éxito'})
+
+@login_required
+def PagoExitosoView(request):
+    return render(request, 'contenido/pago_exitoso.html')
+
 
 @login_required
 def crear_publicacion(request):
@@ -418,6 +510,32 @@ def marcar_como_completada(request, leccion_id):
 # gestion de usuario   
 
 
+@login_required
+def perfil_usuario(request, username):
+
+    username=username
+    perfil = get_object_or_404(PerfilUsuario, usuario__username=username)
+    inscripciones = InscripcionCurso.objects.filter(usuario=perfil.usuario)
+    publicaciones = Publicacion.objects.filter(usuario=perfil.usuario)
+    amigos = Amigo.objects.filter(usuario1=perfil.usuario) | Amigo.objects.filter(usuario2=perfil.usuario)
+    grupos = GrupoChat.objects.filter(usuariogrupo__usuario=perfil.usuario)
+    usuario_actual = request.user
+    ya_son_amigos = Amistad.objects.filter(
+        (Q(usuario1=usuario_actual) | Q(usuario2=usuario_actual)) & 
+        (Q(usuario1=perfil.usuario) | Q(usuario2=perfil.usuario)) & 
+        Q(es_aceptada=True)
+    ).exists()
+    context = {
+        'ya_son_amigos': ya_son_amigos,
+        'username': username,
+        'perfil': perfil,
+        'inscripciones': inscripciones,
+        'publicaciones': publicaciones,
+        'amigos': amigos,
+        'grupos': grupos,
+    }
+    return render(request, 'perfil/perfil.html', context)
+
 def user_login(request):
     if request.method == "POST":
         form = LoginForm(request.POST)
@@ -440,29 +558,45 @@ def user_login(request):
 
 
 
-
 def registro_view(request):
     print("comienza")
     if request.method == 'POST':
         user_form = CustomUserCreationForm(request.POST)
         perfil_form = PerfilUsuarioForm(request.POST, request.FILES)
         print("comienza primer if")
-        
-            # Guardar el usuario
-        user = user_form.save()
-        print("comienzasegundo if")
-        # Guardar el perfil de usuario
-        perfil = perfil_form.save(commit=False)
-        perfil.usuario = user
-        perfil.save()
-        print("termina crear perfil")
-            # Iniciar sesión automáticamente después del registro
-        login(request, user)
-            
-        return redirect('inicio')  # Cambia 'inicio' por la URL a la que deseas redirigir después del registro
 
+        if user_form.is_valid() and perfil_form.is_valid():
+            # Guardar el usuario
+            user = user_form.save()
+            print("comienzasegundo if")
+            # Guardar el perfil de usuario
+            perfil = perfil_form.save(commit=False)
+            perfil.usuario = user
+            perfil.save()
+            detalle_perfil = perfil.detalle
+            print("termina crear perfil")
+
+            # Crea un token de verificación de correo
+            token = TokenVerificacionCorreo.objects.create(user=user)
+            user.is_active = False  # Desactiva el usuario hasta que verifique su correo
+            user.save()  # Guarda el estado inactivo del usuario
+
+            # Prepara y envía el correo electrónico de verificación
+            mail_subject = 'Activa tu cuenta en HotelHub'
+            message = render_to_string('crear_user/activate_email.html', {
+                'user': user,
+                'domain': get_current_site(request).domain,
+                'token': token.token,
+            })
+            send_mail(mail_subject, message, 'tu_email@gmail.com', [user.email])
+
+            # Redirige al usuario a la página de verificación de correo enviado
+            return redirect('email_verification_sent')
+        else:
+            print("Errores del formulario user: ", user_form.errors)
+            print("Errores del formulario perfil: ", perfil_form.errors)
+            messages.error(request, 'Hubo un error en el formulario. Por favor, inténtalo de nuevo.')  # Mensaje de error
     else:
-        print("comienza user form")
         user_form = CustomUserCreationForm()
         perfil_form = PerfilUsuarioForm()
 
@@ -589,8 +723,13 @@ def resetear_contraseña(request, token):
 from .models import PerfilUsuario, DetallePerfilUsuario, Publicacion
 @login_required
 def perfil(request):
-    
     usuario = request.user
+    perfil = PerfilUsuario.objects.get(usuario=usuario)
+
+    inscripciones = InscripcionCurso.objects.filter(usuario=perfil.usuario)
+
+    cursos_creados = Curso.objects.filter(instructor=usuario)
+ 
     amigos = Amistad.objects.filter(usuario1=usuario) 
     # Get the user's profile
     perfil_usuario = get_object_or_404(PerfilUsuario, usuario=request.user)
@@ -609,7 +748,12 @@ def perfil(request):
     grupos_usuario = UsuarioGrupo.objects.filter(usuario=request.user)
     # Obtener los amigos del usuario
     usuario = request.user
-    amigos = Amistad.objects.filter(Q(usuario1=usuario) | Q(usuario2=usuario))
+    amigos = Amistad.objects.filter(
+        (Q(usuario1=usuario) | Q(usuario2=usuario)) & 
+        Q(es_aceptada=True))
+    solicitudes = Amistad.objects.filter(
+        (Q(usuario1=usuario) | Q(usuario2=usuario)) & 
+        Q(es_aceptada=False))
     grupos = GrupoChat.objects.filter(usuariogrupo__usuario=request.user)
     # Obtener los mensajes del primer grupo (puedes personalizar esta lógica)
     primer_grupo = grupos.first()
@@ -632,6 +776,10 @@ def perfil(request):
         'amigos': amigos,
         'mensajes': mensajes,
         'tipos_mensaje': tipos_mensaje,
+        'perfil': perfil,
+        'inscripciones': inscripciones,
+        'cursos_creados': cursos_creados,
+
 
     }
 
@@ -645,3 +793,88 @@ def youtube_search(request):
     if query:
         results = search_youtube(query)
     return render(request, 'servicios/youtube_search.html', {'results': results})
+import json
+from google.oauth2 import service_account
+from .oauth import get_authenticated_service  # Importa la función de autenticación
+from django.contrib.auth.decorators import login_required  # Importa el decorador de autenticación
+
+# ...
+
+@login_required  # Asegura que solo los usuarios autenticados puedan acceder a esta vista
+def crear_transmision_en_vivo(request):
+    if request.method == 'POST':
+        # Obtén los datos del formulario enviado por el usuario
+        titulo = request.POST['titulo']
+        descripcion = request.POST['descripcion']
+        fecha_inicio = request.POST['fecha_inicio']
+        
+        try:
+            # Ruta al archivo JSON de la cuenta de servicio
+            service_account_file = 'C:\\Users\\Asdrual Lezama\\Downloads\\Educacionl_website\\Educacionl_website\\hotel_website\\client_secret_711545168062-uvq9opsk6jol216rhsikbnt3r6rg86jf.apps.googleusercontent.com.json'
+
+            # Carga el archivo JSON
+            with open(service_account_file, 'r') as json_file:
+                service_account_info = json.load(json_file)
+
+            # Accede a la información dentro de la clave "web"
+            web_info = service_account_info.get('web', {})
+
+            # Verifica si los campos necesarios están presentes
+            if 'token_uri' in web_info and 'client_email' in web_info:
+                # Los campos necesarios están presentes
+                token_uri = web_info['token_uri']
+                client_email = web_info['client_email'] # Obtén el correo electrónico del usuario autenticado
+                print("correo", client_email)
+                print("token_uri", token_uri)
+                # Actualiza el campo 'client_email' en la información de la cuenta de servicio
+                service_account_info['web']['client_email'] = client_email
+
+                # Crea una credencial a partir de la cuenta de servicio
+                credentials = service_account.Credentials.from_service_account_info(
+                    service_account_info,
+                    target_principal=client_email,
+                    scopes=['https://www.googleapis.com/auth/youtube.force-ssl']
+                )
+                print("credentials", credentials)
+                # Llama a la función para obtener el servicio autenticado
+                youtube = get_authenticated_service(credentials)
+
+                # Crea un nuevo evento de transmisión en vivo
+                create_request = youtube.liveBroadcasts().insert(
+                    part="snippet,status",
+                    body={
+                        "snippet": {
+                            "title": titulo,
+                            "description": descripcion,
+                            "scheduledStartTime": fecha_inicio
+                        },
+                        "status": {
+                            "privacyStatus": "public"
+                        }
+                    }
+                )
+                
+                response = create_request.execute()
+                
+                # ID del evento de transmisión en vivo que creaste en el paso anterior
+                live_broadcast_id = response['id']
+                transition_request = youtube.liveBroadcasts().transition(
+                    broadcastStatus="live",
+                    id=live_broadcast_id,
+                    part="status"
+                )
+
+                transition_request.execute()
+
+                # Redirige al usuario a una página de confirmación o a la página de la transmisión en vivo
+                return redirect('transmision_en_vivo_confirmada')
+            else:
+                # Los campos necesarios faltan en el archivo JSON
+                # Verifica el formato del archivo JSON y su contenido
+                print("El archivo JSON de la cuenta de servicio no tiene el formato adecuado o falta información.")
+        except FileNotFoundError:
+            # El archivo JSON no se encontró en la ubicación especificada
+            print("El archivo JSON de la cuenta de servicio no se encontró en la ruta especificada.")
+    
+    # Renderiza el formulario para que el usuario complete los detalles de la transmisión
+    return render(request, 'crear_transmision.html')

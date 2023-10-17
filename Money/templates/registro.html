@@ -1,96 +1,316 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Registro</title>
-</head>
-<body>
-    <h1>Registro</h1>
+{% extends "base.html" %}
+{% load static %}
 
-    <form method="post" enctype="multipart/form-data">
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/registro.css' %}">
+<style>
+    /* Estilo base */
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        width: 50%;
+        margin: auto;
+        padding-top: 5%;
+    }
+
+    .card {
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        margin-bottom: 50px;
+    }
+
+    /* Fondo de pantalla */
+    .background-image {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('/path/to/your/background-image.jpg') no-repeat center center fixed;
+        background-size: cover;
+        z-index: -1;
+        opacity: 0.7;
+    }
+
+    /* Estilo de formulario */
+    form {
+        width: 100%;
+    }
+
+    .fieldWrapper {
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .fieldWrapper input,
+    .fieldWrapper select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+    }
+
+    .fieldWrapper input:focus,
+    .fieldWrapper select:focus {
+        border-color: #3498db;
+        outline: none;
+    }
+
+    .fieldWrapper label {
+        margin-bottom: 5px;
+        display: block;
+        font-weight: bold;
+        font-size: 14px;
+        color: #333;
+    }
+
+    /* Botones */
+    button,
+    input[type="submit"] {
+        background-color: #3498db;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+
+    button:hover,
+    input[type="submit"]:hover {
+        background-color: #2980b9;
+    }
+
+    /* Navegación entre pasos */
+    .tab {
+        display: none;
+    }
+
+    .tab.active {
+        display: block;
+    }
+
+    /* Otros estilos */
+    .red-text {
+        color: #e74c3c;
+        font-weight: bold;
+    }
+
+    h2, h3 {
+        color: #2c3e50;
+    }
+
+     /* Media Queries */
+     @media (max-width: 768px) {
+        .container {
+            width: 80%;
+        }
+
+        .fieldWrapper input,
+        .fieldWrapper select {
+            font-size: 14px;
+        }
+
+        h2, h3 {
+            font-size: 18px;
+        }
+
+        button,
+        input[type="submit"] {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .container {
+            width: 95%;
+        }
+
+        .fieldWrapper input,
+        .fieldWrapper select {
+            font-size: 12px;
+        }
+
+        h2, h3 {
+            font-size: 16px;
+        }
+
+        button,
+        input[type="submit"] {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+    }
+
+/* Estilo para los botones de radio */
+.gender-options {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.gender-radio-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    font-size: 14px;
+}
+
+.gender-radio-label input {
+    margin-right: 5px;
+}
+
+/* Estilo personalizado para botones de radio */
+.gender-radio-label input[type="radio"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #2c3e50;
+    border-radius: 50%;
+    outline: none;
+    transition: background 0.2s;
+}
+
+.gender-radio-label input[type="radio"]:checked {
+    background-color: #2c3e50;
+    border-color: #2c3e50;
+}
+
+.gender-radio-label input[type="radio"]:checked::after {
+    content: "";
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: white;
+    margin: 5px auto 0;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+  <!-- Fondo de pantalla -->
+  <div class="background-image">
+    
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="container">
+    <div class="card">
+      <h2>¡Únete a nosotros!</h2>
+      <p class="red-text">Regístrate y descubre más</p>
+
+      <!-- Formulario de registro -->
+      <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        
-        {{ user_form.non_field_errors }}
-        
-        <div class="fieldWrapper">
-            {{ user_form.username.label_tag }}
-            {{ user_form.username }}
-            {{ user_form.username.errors }}
-        </div>
-        
-        <div class="fieldWrapper">
-            {{ user_form.email.label_tag }}
-            {{ user_form.email }}
-            {{ user_form.email.errors }}
+
+        <!-- Paso 1: Información básica -->
+        <div class="tab">
+          <h3>Paso 1: Información básica</h3>
+          <!-- Campos para el modelo User -->
+          <div class="fieldWrapper">
+              {{ user_form.username.label_tag }}
+              {{ user_form.username }}
+              {{ user_form.username.errors }}
+          </div>
+
+          <div class="fieldWrapper">
+              {{ user_form.email.label_tag }}
+              {{ user_form.email }}
+              {{ user_form.email.errors }}
+          </div>
+
+          <div class="fieldWrapper">
+              {{ user_form.password1.label_tag }}
+              {{ user_form.password1 }}
+              {{ user_form.password1.errors }}
+          </div>
+
+          <div class="fieldWrapper">
+              {{ user_form.password2.label_tag }}
+              {{ user_form.password2 }}
+              {{ user_form.password2.errors }}
+          </div>
+          
+          <button type="button" class="next">Siguiente</button>
         </div>
 
-        <div class="fieldWrapper">
-            {{ user_form.password1.label_tag }}
-            {{ user_form.password1 }}
-            {{ user_form.password1.errors }}
-        </div>
+        <!-- Paso 2: Información adicional -->
+        <div class="tab">
+          <h3>Paso 2: Información adicional</h3>
+          <!-- Campos adicionales para el modelo PerfilUsuario -->
+          <div class="fieldWrapper">
+              {{ perfil_form.foto.label_tag }}
+              {{ perfil_form.foto }}
+              {{ perfil_form.foto.errors }}
+          </div>
 
-        <div class="fieldWrapper">
-            {{ user_form.password2.label_tag }}
-            {{ user_form.password2 }}
-            {{ user_form.password2.errors }}
-        </div>
-        
-        {{ perfil_form.non_field_errors }}
-        
-        <div class="fieldWrapper">
-            {{ perfil_form.foto.label_tag }}
-            {{ perfil_form.foto }}
-            {{ perfil_form.foto.errors }}
-        </div>
-        
-        <div class="fieldWrapper">
-            {{ perfil_form.nivel_educativo.label_tag }}
-            {{ perfil_form.nivel_educativo }}
-            {{ perfil_form.nivel_educativo.errors }}
-        </div>
+          <div class="fieldWrapper">
+              {{ perfil_form.nivel_educativo.label_tag }}
+              {{ perfil_form.nivel_educativo }}
+              {{ perfil_form.nivel_educativo.errors }}
+          </div>
 
-        <div class="fieldWrapper">
-            {{ perfil_form.ubicacion.label_tag }}
-            {{ perfil_form.ubicacion }}
-            {{ perfil_form.ubicacion.errors }}
-        </div>
+          <div class="fieldWrapper">
+              {{ perfil_form.ubicacion.label_tag }}
+              {{ perfil_form.ubicacion }}
+              {{ perfil_form.ubicacion.errors }}
+          </div>
 
-        <div class="fieldWrapper">
-            {{ perfil_form.fecha_nacimiento.label_tag }}
-            {{ perfil_form.fecha_nacimiento }}
-            {{ perfil_form.fecha_nacimiento.errors }}
-        </div>
+          <div class="fieldWrapper">
+              {{ perfil_form.fecha_nacimiento.label_tag }}
+              {{ perfil_form.fecha_nacimiento }}
+              {{ perfil_form.fecha_nacimiento.errors }}
+          </div>
 
-        <div class="fieldWrapper">
+          <div class="fieldWrapper">
             {{ perfil_form.genero.label_tag }}
-            {{ perfil_form.genero }}
+            {% for choice in perfil_form.genero.field.choices %}
+                {% if not choice.0 == "" %}
+                    <label>
+                        <input type="radio" name="{{ perfil_form.genero.name }}" value="{{ choice.0 }}"
+                            {% if perfil_form.genero.value == choice.0 %} checked {% endif %}>
+                        {{ choice.1 }}
+                    </label>
+                {% endif %}
+            {% endfor %}
             {{ perfil_form.genero.errors }}
         </div>
+        
 
-        <div class="fieldWrapper">
-            {{ perfil_form.codigo_pais.label_tag }}
-            {{ perfil_form.codigo_pais }}
-            {{ perfil_form.codigo_pais.errors }}
+          <div class="fieldWrapper">
+              {{ perfil_form.codigo_pais.label_tag }}
+              {{ perfil_form.codigo_pais }}
+              {{ perfil_form.codigo_pais.errors }}
+          </div>
+
+          <div class="fieldWrapper">
+              {{ perfil_form.numero_telefono.label_tag }}
+              {{ perfil_form.numero_telefono }}
+              {{ perfil_form.numero_telefono.errors }}
+          </div>
+
+          <button type="button" class="prev">Anterior</button>
+          <input type="submit" value="Registrarse">
         </div>
+      </form>
+    </div>
+  </div>
 
-        <div class="fieldWrapper">
-            {{ perfil_form.numero_telefono.label_tag }}
-            {{ perfil_form.numero_telefono }}
-            {{ perfil_form.numero_telefono.errors }}
-        </div>
-
-        <input type="submit" value="Registrarse">
-    </form>
-    {% if user_form.errors %}
-<div class="alert alert-danger">
-    <ul>
-        {% for error in user_form.errors %}
-            <li>{{ error }}</li>
-        {% endfor %}
-    </ul>
-</div>
-{% endif %}
-
-</body>
-</html>
+  <!-- Agrega JavaScript para manejar la navegación entre pasos -->
+  <script src="{% static 'JS/registro.js' %}"></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}

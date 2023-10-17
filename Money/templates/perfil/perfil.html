@@ -1,0 +1,342 @@
+{% extends "contenido/base.html" %}
+{% load static %}
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/perfiles.css' %}">
+<style>
+ /* Estilo general para el perfil de usuario */
+.container {
+    margin-top: 20px;
+}
+
+/* Estilo para la sección izquierda */
+.left-section {
+    text-align: center;
+}
+
+.profile-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border: 3px solid #0d6efd;
+    border-radius: 50%;
+}
+
+.username {
+    margin-top: 10px;
+    font-size: 24px;
+    color: #0d6efd;
+}
+
+/* Estilo para la sección derecha */
+.cover-photo {
+    margin-bottom: 20px;
+}
+
+/* Estilo para la información básica */
+.lead {
+    font-size: 18px;
+}
+
+/* Estilo para las pestañas */
+.custom-tab .nav-item {
+    margin-right: 10px;
+}
+
+.custom-tab .nav-link {
+    color: #0d6efd;
+    font-weight: bold;
+    border: none;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+    transition: border-color 0.3s ease;
+}
+
+.custom-tab .nav-link:hover {
+    border-color: #0d6efd;
+}
+
+/* Estilo para la lista de elementos en las pestañas */
+.list-group-item {
+    font-size: 16px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Estilo para los elementos activos en las pestañas */
+.nav-link.active {
+    border-color: #0d6efd;
+}
+
+/* Estilos para las secciones izquierda y derecha */
+.left {
+    width: 20%;
+    background-color: blue;
+    overflow-y: auto;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.right {
+    width: 20%;
+    background-color: green;
+    overflow-y: auto;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+/* Añade márgenes para el contenido principal */
+.main-content {
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+/* Estilo general */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+/* Foto de portada */
+.img-fluid {
+    max-height: 300px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Foto de perfil */
+.img-thumbnail {
+    max-width: 150px;
+    border-radius: 50%;
+    border: 3px solid white;
+    position: relative;
+    top: -75px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Nombre y correo del usuario */
+h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #4b4f56;
+}
+
+i.fas.fa-user-circle {
+    font-size: 1.2rem;
+    vertical-align: middle;
+    color: #4b4f56;
+}
+
+p {
+    color: #616770;
+}
+
+/* Botones */
+button.btn {
+    margin-right: 10px;
+    border-radius: 8px;
+}
+
+button.btn-primary {
+    background-color: #1877f2;
+    border-color: #1877f2;
+}
+
+button.btn-secondary {
+    background-color: #e4e6eb;
+    color: #050505;
+    border-color: #ccd0d5;
+}
+
+/* Menú de navegación del perfil */
+.nav-pills .nav-link {
+    border-radius: 8px;
+    color: #4b4f56;
+    margin-right: 10px;
+}
+
+.nav-pills .nav-link.active {
+    background-color: #1877f2;
+    color: white;
+}
+
+/* Detalles del perfil */
+.card {
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    color: #4b4f56;
+}
+
+.card-text {
+    color: #616770;
+}
+
+/* Publicaciones */
+.card-img-top {
+    max-height: 150px;
+    object-fit: cover;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.card-body h6 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #4b4f56;
+}
+</style>
+{% endblock %}
+{% block content %}
+{% csrf_token %}
+<meta name="csrf-token" content="{{ csrf_token }}">
+
+<div class="container mt-5">
+    <!-- Foto de portada -->
+    <div class="row">
+        <div class="col-12">
+            <img src="{{ perfil_usuario.foto_portada.url }}" alt="Foto de portada" class="img-fluid">
+        </div>
+    </div>
+
+    <div class="row mt-4 align-items-center">
+        <!-- Foto de perfil -->
+        <div class="col-md-3">
+            <img src="{{ perfil_usuario.foto_perfil.url }}" alt="Foto de perfil" class="img-thumbnail">
+        </div>
+
+        <!-- Nombre y correo del usuario -->
+        <div class="col-md-6">
+            <h2>{{ perfil_usuario.usuario.first_name }} {{ perfil_usuario.usuario.last_name }} <i class="fas fa-user-circle"></i></h2>
+            <p>{{ perfil_usuario.usuario.email }}</p>
+        </div>
+
+        <!-- Botones -->
+        <form action="{% url 'enviar_solicitud_amistad' username  %}" method="POST">
+            {% csrf_token %}
+            {% if ya_son_amigos %}
+                <!-- Si ya son amigos -->
+                <form action= method="POST">
+                    {% csrf_token %}
+                    <button type="submit">Dejar de seguir {{ username }}</button>
+                </form>
+            {% else %}
+                <!-- Si no son amigos -->
+                <form action="{% url 'enviar_solicitud_amistad' username  %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit">Enviar solicitud de amistad {{ username }}</button>
+                </form>
+            {% endif %}
+
+        </form>
+    </div>
+
+    <!-- Línea divisoria -->
+    <hr>
+
+    <!-- Menú de navegación del perfil -->
+    <div class="row mt-2">
+        <div class="col-12">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link active" data-target="#Publicaciones" href="#">Publicaciones</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-target="#Información" href="#">Información</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-target="#Amigos" href="#">Amigos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-target="#Cursos" href="#">Cursos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-target="#Mensajes" href="#">Mensajes</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+<!-- Detalles del perfil y publicaciones -->
+<div class="row mt-4">
+    <div class="col-md-8">
+        <div id="Publicaciones" class="tab-content">
+            <!-- Contenido de Publicaciones -->
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <img src="{{ perfil_usuario.foto_perfil.url }}" alt="Foto de perfil" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Publicaciones</h5>
+                        {% for publicacion in publicaciones %}
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <h6 class="card-title">Titulo: {{ publicacion.titulo }}</h6>
+                                    <p class="card-text">Descripcion: {{ publicacion.descripcion|truncatewords:20 }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="Informacion" class="tab-content">
+            <!-- Contenido de Información -->
+        </div>
+        <div id="Amigos" class="tab-content">
+            <!-- Contenido de Amigos -->
+        </div>
+        <div id="Cursos" class="tab-content">
+            <!-- Contenido de Cursos -->
+        </div>
+        <div id="Mensajes" class="tab-content">
+            <div class="card mt-4" id="seccion-mensajes">
+                {% include 'perfil/mensajes.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Detalles del perfil y publicaciones -->
+    <div class="row mt-4">
+        <!-- Biografía y detalles adicionales -->
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Presentación</h5>
+                    <p class="card-text">{{ perfil_usuario.biografia }}</p>
+                    <button class="btn btn-outline-primary">Editar presentación</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Más detalles</h5>
+                    <p class="card-text">Trabajo: {{ perfil_usuario.detalle.trabajos }}</p>
+                    <p class="card-text">Estudio: {{ perfil_usuario.detalle.estudios }}</p>
+                    <p class="card-text">Ubicacion: {{ perfil_usuario.detalle.ubicacion }}</p>
+                </div>
+            </div>
+            <!-- Mensajería -->
+
+            
+        </div>
+        </div>
+       
+        <!-- Publicaciones -->
+
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock %}
