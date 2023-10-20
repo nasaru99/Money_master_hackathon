@@ -1,39 +1,33 @@
-from django.urls import path, re_path, include
+from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
-from .views import PagoCursoView
-
 
 urlpatterns = [
+    path('buscar/', views.buscar, name='buscar'),
     # Rutas para la página de inicio
-   
     path('registro/', views.registro_view, name='registro'),
     path('', views.index, name='index'),
     path('Contenido/', views.index_contenido, name='index_contenido'),
-
+    path('aprendizaje/', views.aprendizaje, name='aprendizaje'),
+    path('compras', views.compras, name = 'compras'),
+    path('pago', views.pago, name='pago'),
     # Rutas para la gestión de servicios
     path('search/', views.youtube_search, name='youtube_search'),
     path('enviar_mensaje/', views.enviar_mensaje, name='enviar_mensaje'),
-    path('buscar/', views.buscar, name='buscar'),
+
     # Rutas para la gestión de usuario
-    path('enviar-solicitud/<str:username>/', views.enviar_solicitud_amistad, name='enviar_solicitud_amistad'),
-    path('aceptar-solicitud/<int:solicitud_id>/', views.aceptar_solicitud_amistad, name='aceptar_solicitud_amistad'),
-    path('perfil/<str:username>/', views.perfil_usuario, name='perfil_usuario'),
-    path('signup/', views.registro_view, name='signup'),
+    path('signup/', views.SignUpView.as_view(), name='signup'),
     path('login/', views.user_login, name='login'),
     path('activate/<uuid:token>/', views.activate_account, name='activate_account'),
     path('email-verification-sent/', views.email_verification_sent, name='email_verification_sent'),
     path('solicitar-recuperacion/', views.solicitar_recuperacion, name='solicitar_recuperacion'),
     path('resetear-contraseña/<uuid:token>/', views.resetear_contraseña, name='resetear_contraseña'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('accounts/', include('allauth.urls')),
+
     # Rutas para la gestión de contenido
-    path('contenido/pagar_curso/<int:curso_id>/', PagoCursoView.as_view(), name='pagar_curso'),
-    path('pago_exitoso/', views.PagoExitosoView, name='pago_exitoso'),
     path('perfil/', views.perfil, name='perfil'),
-    path('accounts/profile/', views.perfil, name='profile'),
     path('contenido/crear_curso/', views.crear_curso, name='crear_curso'),
     path('contenido/crear_leccion/<int:curso_id>/', views.crear_leccion, name='crear_leccion'),
     path('contenido/curso/<int:curso_id>/', views.detalle_curso, name='detalle_curso'),
@@ -53,7 +47,7 @@ urlpatterns = [
     path('contenido/gestionar_publicacion/<int:publicacion_id>/', views.gestionar_publicacion, name='gestionar_publicacion_con_id'),
 
     # Otras rutas ...
-    path('crear_transmision/', views.crear_transmision_en_vivo, name='crear_transmision_en_vivo'),
+
 ]
 
 if settings.DEBUG:

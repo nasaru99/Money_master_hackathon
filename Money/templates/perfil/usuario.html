@@ -219,9 +219,7 @@ button.btn-secondary {
 
         <!-- Botones -->
         <div class="col-md-3 text-right">
-            <a href="{% url 'social:begin' 'google-oauth2' %}">Iniciar sesión con Google</a>
-
-            <a class="btn btn-primary"  href="{% url 'crear_curso' %}">Crear Curso</a>
+            <button class="btn btn-primary">Agregar Curso</button>
             <button class="btn btn-secondary">Editar Perfil</button>
         </div>
     </div>
@@ -230,196 +228,209 @@ button.btn-secondary {
     <hr>
 
     <!-- Menú de navegación del perfil -->
+    <div class="row mt-2">
+        <div class="col-12">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Publicaciones</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Información</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Amigos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Cursos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Mensajes</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 
-    <div class="container">
-        <ul class="nav nav-tabs custom-tab" id="myTab" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" id="Publicaciones-tab" data-toggle="tab" href="#Publicaciones" role="tab">Publicaciones</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="Informacion-tab" data-toggle="tab" href="#Informacion" role="tab">Informacion</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="Amigos-tab" data-toggle="tab" href="#Amigos" role="tab">Amigos</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="Cursos-tab" data-toggle="tab" href="#Cursos" role="tab">Cursos</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="Mensajes-tab" data-toggle="tab" href="#Mensajes" role="tab">Mensajes</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="Solicitudes-tab" data-toggle="tab" href="#Solicitudes" role="tab">Solicitudes</a>
-            </li>
-        </ul>
-    
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="Publicaciones" role="tabpanel">
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <img src="{{ perfil_usuario.foto_perfil.url }}" alt="Foto de perfil" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Publicaciones</h5>
-                            {% for publicacion in publicaciones %}
-                                <div class="card mt-3">
-                                    <div class="card-body">
-                                        <h6 class="card-title">Titulo: {{ publicacion.titulo }}</h6>
-                                        <p class="card-text">Descripcion: {{ publicacion.descripcion|truncatewords:20 }}</p>
+    <!-- Detalles del perfil y publicaciones -->
+    <div class="row mt-4">
+        <!-- Biografía y detalles adicionales -->
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Presentación</h5>
+                    <p class="card-text">{{ perfil_usuario.biografia }}</p>
+                    <button class="btn btn-outline-primary">Editar presentación</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Más detalles</h5>
+                    <p class="card-text">Trabajo: {{ perfil_usuario.detalle.trabajos }}</p>
+                    <p class="card-text">Estudio: {{ perfil_usuario.detalle.estudios }}</p>
+                    <p class="card-text">Ubicacion: {{ perfil_usuario.detalle.ubicacion }}</p>
+                </div>
+            </div>
+            <!-- Mensajería -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Mensajería</h5>
+                    
+                    <!-- Lista de grupos de chat y amigos -->
+                    <div class="row">
+                        <div class="col-md-4">
+                            <!-- Lista de grupos de chat -->
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    Tus Grupos
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group">
+                                        {% for grupo in grupos %}
+                                            <li class="list-group-item">
+                                                <a href="#" class="chat-link" data-toggle="modal" data-target="#grupoModal{{ grupo.id }}">
+                                                    {{ grupo.nombre }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- Lista de amigos -->
+                            <div class="card">
+                                <div class="card-header">
+                                    Tus Amigos
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group">
+                                        {% for amigo in amigos %}
+                                        <li class="list-group-item">
+                                            <a href="#" class="chat-link" data-toggle="modal" data-target="#amigoModal{{ amigo.id }}">
+                                                {% if amigo.usuario1 == request.user %}
+                                                    {{ amigo.usuario2.username }}
+                                                {% else %}
+                                                    {{ amigo.usuario1.username }}
+                                                {% endif %}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                    
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <!-- Ventana de chat (se muestra en el modal) -->
+                            {% for grupo in grupos %}
+                                <div class="modal fade" id="grupoModal{{ grupo.id }}" tabindex="-1" role="dialog" aria-labelledby="grupoModal{{ grupo.id }}Label" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <img src="" alt="{{ grupo.nombre }}" class="chat-avatar">
+                                                <h5 class="modal-title ml-2" id="grupoModal{{ grupo.id }}Label">{{ grupo.nombre }}</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <!-- Mensajes del grupo -->
+                                                <div class="chat-box">
+                                                    {% for mensaje in mensajes %}
+                                                        {% if mensaje.grupo == grupo %}
+                                                            <div class="card {% if mensaje.emisor == request.user %}sent{% else %}received{% endif %}">
+                                                                <div class="card-body">
+                                                                    <h6 class="card-title">{{ mensaje.emisor.username }}:</h6>
+                                                                    <p class="card-text">{{ mensaje.texto }}</p>
+                                                                    <small>{{ mensaje.fecha_mensaje }}</small>
+                                                                </div>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                                <!-- Formulario para enviar mensajes -->
+                                                <form method="post" action="{% url 'enviar_mensaje' %}" class="chat-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="grupo.id" value="{{ grupo.grupo_id }}">
+                                                    <input type="hidden" name="receptor_id" value="{{ amigo.usuario2.id }}">
+                                                    <div class="input-group">
+                                                        <textarea name="mensaje" rows="3" placeholder="Escribe un mensaje..." class="form-control"></textarea>
+                                                        <div class="input-group-append">
+                                                            <button type="submit" class="btn btn-primary">Enviar</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             {% endfor %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-    
-            <div class="tab-pane fade" id="Informacion" role="tabpanel">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Presentación</h5>
-                        <p class="card-text">{{ perfil_usuario.biografia }}</p>
-                        <button class="btn btn-outline-primary">Editar presentación</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Más detalles</h5>
-                        <p class="card-text">Trabajo: {{ perfil_usuario.detalle.trabajos }}</p>
-                        <p class="card-text">Estudio: {{ perfil_usuario.detalle.estudios }}</p>
-                        <p class="card-text">Ubicacion: {{ perfil_usuario.detalle.ubicacion }}</p>
-                    </div>
-                </div>
-            </div>
-    
-            <div class="tab-pane fade" id="Amigos" role="tabpanel">
-                <!-- Aquí se mostrarán los cursos en progreso -->
-                {% for amigo in amigos %}
-                    <li class="list-group-item">
-                        {% if amigo.usuario1 == request.user %}
-                            <a href="{% url 'perfil_usuario' amigo.usuario2.username %}" class="chat-link">
-                                {{ amigo.usuario2.username }}
-                            </a>
-                        {% else %}
-                            <a href="{% url 'perfil_usuario' amigo.usuario1.username %}" class="chat-link">
-                                {{ amigo.usuario1.username }}
-                            </a>
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </div>
-            
-
-            <div class="tab-pane fade" id="Cursos" role="tabpanel">
-                <!-- Cursos creados por el usuario -->
-                <h3>Cursos Creados</h3>
-                {% for curso in cursos_creados %}
-                    <div class="card">
-                        <img src="{{ curso.imagen.url }}" class="card-img-top" alt="{{ curso.titulo }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ curso.titulo }}</h5>
-                            <p class="card-text">{{ curso.descripcion|truncatechars:100 }}</p>
-                        </div>
-                    </div>
-                {% endfor %}
-            
-                <!-- Cursos en los que el usuario está inscrito -->
-                {% if inscripciones %}
-                <h3>Cursos Inscritos</h3>
-                {% for inscripcion in inscripciones %}
-                    <div class="card">
-                        <img src="{{ inscripcion.curso.imagen.url }}" class="card-img-top" alt="{{ inscripcion.curso.titulo }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ inscripcion.curso.titulo }}</h5>
-                            <p class="card-text">{{ inscripcion.curso.descripcion|truncatechars:100 }}</p>
-                            <p class="card-text">Fecha de inscripción: {{ inscripcion.fecha_inscripcion }}</p>
-                            <!-- ... otros detalles ... -->
-                        </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p>No estás inscrito en ningún curso.</p>
-            {% endif %}
-            
-            </div>
-            
-            
-
-            <div class="tab-pane fade" id="Mensajes" role="tabpanel">
-                <div class="card mt-4" id="seccion-mensajes">
-                    {% include 'perfil/mensajes.html' %}
-                </div>
-            </div>
-
-            <div class="tab-pane fade" id="Solicitudes" role="tabpanel">
-                <!-- Aquí se mostrarán los cursos en progreso -->
-                {% include 'buscar.html' %}
-                <div class="col-md-4">
-                    <!-- Lista de grupos de chat -->
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            Tus Grupos
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-group">
-                                {% for solicitudes in solicitudes %}
-                                    <li class="list-group-item">
-                                        <a href="#" class="chat-link" data-toggle="modal" data-target="#grupoModal{{ grupo.id }}">
-                                            {{ solicitudes.nombre }}
-                                        </a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- Lista de amigos -->
-                    <div class="card">
-                        <div class="card-header">
-                            Tus Amigos
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-group">
-                                {% for solicitud in solicitudes %}
-                                <li class="list-group-item">
-                                    {% if solicitud.usuario1 == request.user %}
-                                        <a href="{% url 'perfil_usuario' solicitud.usuario2.username %}">{{ solicitud.usuario2.username }}</a>
-                                        <a href="{% url 'aceptar_solicitud_amistad' solicitud.id %}" class="btn btn-primary">Aceptar Solicitud</a>
-                                    {% else %}
-                                        <a href="{% url 'perfil_usuario' solicitud.usuario1.username %}">{{ solicitud.usuario1.username }}</a>
-                                        <a href="{% url 'aceptar_solicitud_amistad' solicitud.id %}" class="btn btn-primary">Aceptar Solicitud</a>
-                                    {% endif %}
-                                </li>
-                                {% endfor %}
-                            </ul>
+                            <!-- Ventana de chat para amigos -->
+                            {% for amigo in amigos %}
+                                <div class="modal right fade" id="amigoModal{{ amigo.id }}" tabindex="-1" role="dialog" aria-labelledby="amigoModal{{ amigo.id }}Label" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-vertical" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <img src="" alt="{{ amigo.usuario2.username }}" class="chat-avatar">
+                                                <h5 class="modal-title ml-2" id="amigoModal{{ amigo.id }}Label">{{ amigo.usuario2.username }}</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <!-- Mensajes con el amigo -->
+                                                <div class="chat-box">
+                                                    {% for mensaje in mensajes_amigos %}
+                                                        {% if request.user == mensaje.emisor and amigo.usuario2 == mensaje.receptor or request.user == mensaje.receptor and amigo.usuario2 == mensaje.emisor %}
+                                                            <div class="card {% if mensaje.emisor == request.user %}sent{% else %}received{% endif %}">
+                                                                <div class="card-body">
+                                                                    <h6 class="card-title">{{ mensaje.emisor.username }}:</h6>
+                                                                    <p class="card-text">{{ mensaje.texto }}</p>
+                                                                </div>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                                <!-- Formulario para enviar mensajes al amigo -->
+                                                <form method="post" action="{% url 'enviar_mensaje' %}" class="chat-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="receptor_id" value="{{ amigo.usuario2.id }}">
+                                                    <div class="input-group">
+                                                        <textarea name="mensaje" rows="3" placeholder="Escribe un mensaje..." class="form-control"></textarea>
+                                                        <div class="input-group-append">
+                                                            <button type="submit" class="btn btn-primary">Enviar</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
                         </div>
                         
                     </div>
                 </div>
             </div>
         </div>
+        </div>
 
+        <!-- Publicaciones -->
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <img src="{{ perfil_usuario.foto_perfil.url }}" alt="Foto de perfil" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">Publicaciones</h5>
+                    {% for publicacion in publicaciones %}
+                        <div class="card mt-3">
+                            <div class="card-body">
+                                <h6 class="card-title">Titulo: {{ publicacion.titulo }}</h6>
+                                <p class="card-text">Descripcion: {{ publicacion.descripcion|truncatewords:20 }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#formulario-mensaje').on('submit', function(e) {
-            e.preventDefault();
-            
-            $.ajax({
-                url: '{% url "enviar_mensaje" %}',
-                method: 'POST',
-                data: $(this).serialize(),
-                headers: {
-                    'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val()
-                },
-                success: function(data) {
-                    $('#mensajes-container').append(data.mensaje_html);
-                    $('#formulario-mensaje')[0].reset();
-                }
-            });
-        });
-    });
-</script>
 
 {% endblock %}

@@ -1,6 +1,5 @@
 {% extends "contenido/base.html" %}
 {% block content %}
-
 <div class="container">
     <ul class="nav nav-tabs custom-tab" id="myTab" role="tablist">
         <li class="nav-item">
@@ -10,7 +9,7 @@
             <a class="nav-link" id="enprogreso-tab" data-toggle="tab" href="#enprogreso" role="tab">Cursos en progreso</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="listadeseos-tab" data-toggle="tab" href="#listadeseos" role="tab">Publicaciones</a>
+            <a class="nav-link" id="listadeseos-tab" data-toggle="tab" href="#listadeseos" role="tab">Lista de deseos</a>
         </li>
     </ul>
 
@@ -21,9 +20,7 @@
             <div class="card">
                 <img src="{{ curso.imagen.url }}" class="card-img-top" alt="{{ curso.titulo }}">
                 <div class="card-body">
-                    <h5 class="card-title">
-                        <a href="{% url 'pagar_curso' curso.id %}">{{ curso.titulo }}</a>
-                    </h5>
+                    <h5 class="card-title">{{ curso.titulo }}</h5>
                     <p class="card-text">{{ curso.descripcion|truncatechars:100 }}</p>
                     <!-- Barra de progreso -->
                     <div class="progress">
@@ -54,31 +51,17 @@
         </div>
 
         <div class="tab-pane fade" id="listadeseos" role="tabpanel">
-            <!-- ... otras partes de tu plantilla ... -->
-
-<div class="tab-pane fade show active" id="Publicaciones" role="tabpanel">
-    <div class="col-md-4">
-        <div class="card mb-4">
-            <img src="{{ perfil_usuario.foto_perfil.url }}" alt="Foto de perfil" class="card-img-top">
-            <div class="card-body">
-                <h5 class="card-title">Publicaciones</h5>
-                {% for publicacion in publicaciones %}
-                    <div class="card mt-3">
-                        <div class="card-body">
-                            <h6 class="card-title">Titulo: {{ publicacion.titulo }}</h6>
-                            <p class="card-text">Descripcion: {{ publicacion.descripcion|truncatewords:20 }}</p>
-                        </div>
-                    </div>
-                {% endfor %}
+            <!-- Aquí se mostrarán los cursos en la lista de deseos del usuario -->
+            {% for curso in cursos_deseados %}
+            <div class="card">
+                <img src="{{ curso.imagen.url }}" class="card-img-top" alt="{{ curso.titulo }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ curso.titulo }}</h5>
+                    <p class="card-text">{{ curso.descripcion|truncatechars:100 }}</p>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
-
-<!-- ... otras partes de tu plantilla ... -->
-
+            {% endfor %}
         </div>
     </div>
 </div>
 {% endblock %}
-

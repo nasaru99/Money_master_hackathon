@@ -1,45 +1,89 @@
 {% extends "base.html" %}
 
 {% load static %}
-{% load socialaccount %}
 
 
 {% block extra_head %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">s
+<style>
+  .container{
+    width: 400px !important;
+  }
+  form p{
+    color:black;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  form p input{
+    border: 1px solid black;
+    border-radius: 0 !important;
+    width: 100% !important;
+    padding: 10px;
+    color: black;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  .login-container{
+    border-radius:50px; 
+    background-color:#fff;
+    justify-content:center;
+    align-items:center; 
+    flex-direction:column;
+  }
+  .login{
+    text-transform:uppercase;
+    border-radius:100px;
+    background:#ffe8d3;
+    border:none;
+    color:black;
+    width: 200px;
+    height: 65px;
+    border: 1px solid black;
+  }
+  .ph-center::-webkit-input-placeholder {
+    text-align: center;
+    color: grey;
+  }
+  .login-methods div{
+    border: 1px solid black;
+    border-radius: 0 !important;
+    width: 100% !important;
+    padding: 10px;
+    color: black;
+    margin-bottom: 26px;
+    text-align: center;
+    height: 46px;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
-<div class="image">
-    <div class="background-image"></div>
-</div>
-<div class="login-container d-flex" style="border-radius:50px; background-color:#2e2e2e;justify-content:center;align-items:center; flex-direction:column;">
+<div class="login-container d-flex">
     <div class="login-card p-4" style="padding-bottom:0 !important;">
-        <h2 style="color:#d96464; text-transform:uppercase;">¡Te extrañabamos!</h2>
-        <h2 class="text-center mb-4" style="color:white; text-transform:uppercase;">Bienvenido</h2>
+        <h2 style="color:black; text-align: center; font-size: 26px;">Inicia sesión en tu cuenta de Money Master</h2>
+        <div class="login-methods">
+            <div>Google</div>
+            <div>Facebook</div>
+            <div>Microsoft</div>
+        </div>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <div style="display:flex; justify-content: flex-start; align-items:center; height: 40px;">
+            <!-- <div style="display:flex; justify-content: flex-start; align-items:center; height: 40px;">
                 <input type="checkbox" id="showPassword" style="appearance:none;background-color:#2e2e2e !important; border: 2px solid #d96464; border-radius: 15px !important; width: 50px !important; height: 100%;"> 
                 <p style="margin:0; text-transform:uppercase; font-size: 20px;">ver Contraseña</p>
-            </div>
+            </div> -->
             <div class="d-flex justify-content-center mt-3 mb-3">
-                <button type="submit" class="btn btn-primary" style="text-transform: uppercase;border-radius:100px;background:#c75e5e; border:none;">Iniciar sesión</button>
+                <button type="submit" class="btn btn-primary login">Iniciar sesión</button>
             </div>
         </form>
         <div class="text-center ">
-        </p>
+            </p>
+        </div>
     </div>
-</div>
-<a style="color:white; text-decoration:underline; margin-bottom: 20px;" href="{% url 'solicitar_recuperacion' %}">¿Olvidaste tu contraseña?</a>
-
-<div style="display:flex; flex-direction:column; justify-content:center; align-items:center;">
-    <p style="color:white;">Al iniciar sesión estás aceptando nuestros</p>
-    <a style="color:white; text-decoration:underline;" href="#">Terminos y condiciones</a>
-    <a href="{% provider_login_url 'google' %}">Iniciar sesión con Google</a>
-
-</div>
-<hr style="width:80% !important; border-top: 1px solid white; margin:10px; height: 2px !important;">
+    <a style="color:black; text-decoration:underline; margin-bottom: 20px;" href="#">Olvidé mi contraseña</a>
+    <hr style="border: 1px solid black; width: 80%;">
+    <p style="color:black;width: 100%;display: flex;align-items: center;justify-content: center;gap: 5px;">¿No tienes cuenta?<a style="color: black;" href="{% url 'signup' %}">Registrarse</a></p>
 </div>
 
 

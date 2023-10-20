@@ -1,8 +1,0 @@
-<!-- mensaje_individual.html -->
-<div class="card {% if mensaje.emisor == request.user %}sent{% else %}received{% endif %}">
-    <div class="card-body">
-        <h6 class="card-title">{{ mensaje.emisor.username }}:</h6>
-        <p class="card-text">{{ mensaje.texto }}</p>
-        <small>{{ mensaje.fecha_mensaje }}</small>
-    </div>
-</div>

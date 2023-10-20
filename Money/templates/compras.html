@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block extra_head %}
+<style>
+    .container{
+        margin: 0 !important;
+        min-width: 98.9vw !important;
+    }
+    .content{
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        align-content: flex-start;
+        flex-wrap: wrap;
+        gap: 25px;
+        height: 100%;
+        padding-inline: 90px;
+        padding-block: 70px;
+    }
+    .card{
+        display: flex;
+        flex-direction: row;
+        border: none;
+        gap: 20px   ;
+    }
+    hr{
+        border: 1.5px solid black;
+        width: 500px;
+    }
+</style>
+{% endblock %}
+{% block content %}
+    <div style="background-color: #fdf5ee; height: 257px;display: flex; align-items: center;justify-content: center;">
+        <h1 style="text-align: center; padding-block: 50px;">Carro de compras</h1>
+    </div>
+    <div class="content">
+        <div>
+            <h2 style="margin: 0;">4 cursos en el carrito</h2>
+            <hr style="margin: 0;">
+        </div>
+        <div class="card">
+            <div class="image" style="background-color: #dadada; width: 200px;">
+                imagen
+            </div>
+            <div>
+                <div style="display: flex; flex-direction: column;">
+                    <h5 class="title" style="color: black;">Tu viaje financiero</h5>
+                    <p class="author" style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div style="display: flex; gap: 5px;">
+                    <p class="rate">4.6</p>
+                    <p>Estrellas</p>
+                    <p class="amount">(478,649)</p>
+                </div>
+                <p class="price">$50.25</p>
+            </div>
+        </div>
+        <hr>
+        <div class="card">
+            <div class="image" style="background-color: #dadada; width: 200px;">
+                imagen
+            </div>
+            <div>
+                <div style="display: flex; flex-direction: column;">
+                    <h5 class="title" style="color: black;">Tu viaje financiero</h5>
+                    <p class="author" style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div style="display: flex; gap: 5px;">
+                    <p class="rate">4.6</p>
+                    <p>Estrellas</p>
+                    <p class="amount">(478,649)</p>
+                </div>
+                <p class="price">$50.25</p>
+            </div>
+        </div>
+        <hr>
+        <div class="card">
+            <div class="image" style="background-color: #dadada; width: 200px;">
+                imagen
+            </div>
+            <div>
+                <div style="display: flex; flex-direction: column;">
+                    <h5 class="title" style="color: black;">Tu viaje financiero</h5>
+                    <p class="author" style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div style="display: flex; gap: 5px;">
+                    <p class="rate">4.6</p>
+                    <p>Estrellas</p>
+                    <p class="amount">(478,649)</p>
+                </div>
+                <p class="price">$50.25</p>
+            </div>
+        </div>
+        <hr>
+        <div class="card">
+            <div class="image" style="background-color: #dadada; width: 200px;">
+                imagen
+            </div>
+            <div>
+                <div style="display: flex; flex-direction: column;">
+                    <h5 class="title" style="color: black;">Tu viaje financiero</h5>
+                    <p class="author" style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div style="display: flex; gap: 5px;">
+                    <p class="rate">4.6</p>
+                    <p>Estrellas</p>
+                    <p class="amount">(478,649)</p>
+                </div>
+                <p class="price">$50.25</p>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <div style="display: flex; padding-inline: 150px; justify-content: space-between;">
+        <div style="border: 1px solid black; border-radius:20px; width: 788px; height: 522px; padding: 15px; display: flex; flex-direction: column  ;">
+            <p style="font-size:50px; line-height:69px; color:#8C8787; text-align: start;">Total:</p>
+            <div>
+                <p style="margin-inline-start: 160px; font-size:40px; line-height:55px;">$98.02</p>
+                <p style="margin-inline-start: 219px; color: gray; font-size:40px; line-height:55px;"><del>$100.50</del></p>
+                <p style="margin-inline-start: 182px; font-size:40px; line-height:55px;">2% de descuento</p>
+            </div>
+            <button style="margin-inline-start: 246px; border-radius: 50px; background-color: #d8c6ff; width: 465px; height: 94px; font-size: 40px; line-height:55px;">VERIFICAR</button>
+        </div>
+        <div style="width: 591px; height: 201px;padding: 10px; border: 1px solid black; background-color: #fff7f7; display: flex; flex-direction: column; align-items: center;">
+            <p style="font-size:50px; line-height:69px;">Promociones</p>
+            <div style="display:flex; flex-direction:row; align-items:center;">
+                <input type="text" style="background-color: #fff7f7; text-align: center;font-size:30px; width: 335px; height: 52px;padding: 0;" placeholder="Ingresar cupón">
+                <button style="background-color: #ffe1e1;font-size:30px;line-height:41px;width: 200px; height: 52px; padding: 0;">APLICAR</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}

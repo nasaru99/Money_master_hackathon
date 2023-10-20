@@ -1,0 +1,412 @@
+{% extends "base.html" %}
+{% block extra_head %}
+<style>
+    .container{
+        margin: 0 !important;
+        min-width: 98.9vw !important; 
+        height: 100%;
+    }
+    .texto-gris {
+        color: grey;
+    }
+    .texto-negro {
+        color: black;
+    }
+    button{
+        border: none;
+        background-color: transparent;
+        font-size: 24px;
+    }
+    button:focus{
+        outline: none;
+    }
+    .content{
+        background-color: white;
+        display: flex;
+        align-content: flex-start;
+        flex-wrap: wrap;
+        gap: 100px;
+        height: 100%;
+        padding-inline: 90px;
+        padding-block: 70px;
+    }
+    .content .card{
+        background-color: white;
+        display: flex;
+        width: 259.775px !important;
+        border: none;
+    }
+    .progress-container {
+        width: 100% !important;
+        background-color: #1f5585 !important;
+        border-radius: 15px;
+    }
+
+    .progress-bar {
+        width: 0;
+        height: 10px;
+        background-color: #0098ff !important;
+        text-align: center;
+        line-height: 30px;
+        color: rgb(84, 0, 230);
+        border-radius: 15px;
+    }
+</style>
+{% endblock %}
+{% block content %}
+
+    <div style="background-color: #fdf5ee; width: 100%;">
+        <h1 style="text-align: center; padding-block: 50px;">Mi aprendizaje</h1>
+        <div style="display: flex; align-items: center; justify-content: space-around;">
+            <button class="texto-negro" onclick="mostrarContenido('contenido1', this)">Todos los cursos</button>
+            <button onclick="mostrarContenido('contenido2', this)">Cursos en proceso</button>
+            <button onclick="mostrarContenido('contenido3', this)">Lista de deseos</button>
+        </div>
+    </div>
+
+    <div id="contenido1" class="items">
+        <div class="content">
+            <div style="display: flex; flex-direction: column; gap: 10px;" class="card" data-curso="curso1" data-progress="0">
+                <div style="background-color: gray; height: 120px;">
+                    imagen
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <h4 style="color: black;">Tu viaje financiero</h4>
+                    <p style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div class="progress-container" >
+                    <div class="progress-bar" id="progress-bar-1"></div>
+                </div>
+                <p class="progress-text" id="progress-text-1">0%</p>
+                <button class="ver-clase" onclick="incrementProgress(1)">Ver Clase</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;" class="card" data-curso="curso2" data-progress="0">
+                <div style="background-color: gray; height: 120px;">
+                    imagen
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <h4 style="color: black;">Tu viaje financiero</h4>
+                    <p style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div class="progress-container" >
+                    <div class="progress-bar" id="progress-bar-2"></div>
+                </div>
+                <p class="progress-text" id="progress-text-2">0%</p>
+                <button class="ver-clase" onclick="incrementProgress(2)">Ver Clase</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;" class="card" data-curso="curso3" data-progress="0">
+                <div style="background-color: gray; height: 120px;">
+                    imagen
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <h4 style="color: black;">Tu viaje financiero</h4>
+                    <p style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div class="progress-container" >
+                    <div class="progress-bar" id="progress-bar-3"></div>
+                </div>
+                <p class="progress-text" id="progress-text-3">0%</p>
+                <button class="ver-clase" onclick="incrementProgress(3)">Ver Clase</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;" class="card" data-curso="curso4" data-progress="0">
+                <div style="background-color: gray; height: 120px;">
+                    imagen
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <h4 style="color: black;">Tu viaje financiero</h4>
+                    <p style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div class="progress-container" >
+                    <div class="progress-bar" id="progress-bar-4"></div>
+                </div>
+                <p class="progress-text" id="progress-text-4">0%</p>
+                <button class="ver-clase" onclick="incrementProgress(4)">Ver Clase</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;" class="card" data-curso="curso5" data-progress="0">
+                <div style="background-color: gray; height: 120px;">
+                    imagen
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <h4 style="color: black;">Tu viaje financiero</h4>
+                    <p style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div class="progress-container" >
+                    <div class="progress-bar" id="progress-bar-5"></div>
+                </div>
+                <p class="progress-text" id="progress-text-5">0%</p>
+                <button class="ver-clase" onclick="incrementProgress(5)">Ver Clase</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;" class="card" data-curso="curso6" data-progress="0">
+                <div style="background-color: gray; height: 120px;">
+                    imagen
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <h4 style="color: black;">Tu viaje financiero</h4>
+                    <p style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div class="progress-container" >
+                    <div class="progress-bar" id="progress-bar-6"></div>
+                </div>
+                <p class="progress-text" id="progress-text-6">0%</p>
+                <button class="ver-clase" onclick="incrementProgress(6)">Ver Clase</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;" class="card" data-curso="curso7" data-progress="0">
+                <div style="background-color: gray; height: 120px;">
+                    imagen
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <h4 style="color: black;">Tu viaje financiero</h4>
+                    <p style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div class="progress-container" >
+                    <div class="progress-bar" id="progress-bar-7"></div>
+                </div>
+                <p class="progress-text" id="progress-text-7">0%</p>
+                <button class="ver-clase" onclick="incrementProgress(7)">Ver Clase</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;" class="card" data-curso="curso8" data-progress="0">
+                <div style="background-color: gray; height: 120px;">
+                    imagen
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <h4 style="color: black;">Tu viaje financiero</h4>
+                    <p style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div class="progress-container" >
+                    <div class="progress-bar" id="progress-bar-8"></div>
+                </div>
+                <p class="progress-text" id="progress-text-8">0%</p>
+                <button class="ver-clase" onclick="incrementProgress(8)">Ver Clase</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;" class="card" data-curso="curso9" data-progress="0">
+                <div style="background-color: gray; height: 120px;">
+                    imagen
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <h4 style="color: black;">Tu viaje financiero</h4>
+                    <p style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div class="progress-container" >
+                    <div class="progress-bar" id="progress-bar-9"></div>
+                </div>
+                <p class="progress-text" id="progress-text-9">0%</p>
+                <button class="ver-clase" onclick="incrementProgress(9)">Ver Clase</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;" class="card" data-curso="curso10" data-progress="0">
+                <div style="background-color: gray; height: 120px;">
+                    imagen
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <h4 style="color: black;">Tu viaje financiero</h4>
+                    <p style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div class="progress-container" >
+                    <div class="progress-bar" id="progress-bar-10"></div>
+                </div>
+                <p class="progress-text" id="progress-text-10">0%</p>
+                <button class="ver-clase" onclick="incrementProgress(10)">Ver Clase</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;" class="card" data-curso="curso11" data-progress="0">
+                <div style="background-color: gray; height: 120px;">
+                    imagen
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <h4 style="color: black;">Tu viaje financiero</h4>
+                    <p style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div class="progress-container" >
+                    <div class="progress-bar" id="progress-bar-11"></div>
+                </div>
+                <p class="progress-text" id="progress-text-11">0%</p>
+                <button class="ver-clase" onclick="incrementProgress(11)">Ver Clase</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;" class="card" data-curso="curso12" data-progress="0">
+                <div style="background-color: gray; height: 120px;">
+                    imagen
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <h4 style="color: black;">Tu viaje financiero</h4>
+                    <p style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div class="progress-container" >
+                    <div class="progress-bar" id="progress-bar-12"></div>
+                </div>
+                <p class="progress-text" id="progress-text-12">0%</p>
+                <button class="ver-clase" onclick="incrementProgress(12)">Ver Clase</button>
+            </div>
+        </div>
+    </div>
+    <div id="contenido2" class="items" style="display:none;">
+        <div class="content">
+            <div style="display: flex; flex-direction: column; gap: 10px;" class="card" data-curso="curso1" data-progress="0">
+                <div style="background-color: #dadada; height: 120px;">
+                    imagen
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <h4 style="color: black;">Tu viaje financiero</h4>
+                    <p style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div class="progress-container" >
+                    <div class="progress-bar" id="progress-bar-1"></div>
+                </div>
+                <p class="progress-text" id="progress-text-1">0%</p>
+                <button class="ver-clase" onclick="incrementProgress(1)">Ver Clase</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;" class="card" data-curso="curso2" data-progress="0">
+                <div style="background-color: gray; height: 120px;">
+                    imagen
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <h4 style="color: black;">Tu viaje financiero</h4>
+                    <p style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div class="progress-container" >
+                    <div class="progress-bar" id="progress-bar-2"></div>
+                </div>
+                <p class="progress-text" id="progress-text-2">0%</p>
+                <button class="ver-clase" onclick="incrementProgress(2)">Ver Clase</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;" class="card" data-curso="curso3" data-progress="0">
+                <div style="background-color: gray; height: 120px;">
+                    imagen
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <h4 style="color: black;">Tu viaje financiero</h4>
+                    <p style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div class="progress-container" >
+                    <div class="progress-bar" id="progress-bar-3"></div>
+                </div>
+                <p class="progress-text" id="progress-text-3">0%</p>
+                <button class="ver-clase" onclick="incrementProgress(3)">Ver Clase</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;" class="card" data-curso="curso4" data-progress="0">
+                <div style="background-color: gray; height: 120px;">
+                    imagen
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <h4 style="color: black;">Tu viaje financiero</h4>
+                    <p style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div class="progress-container" >
+                    <div class="progress-bar" id="progress-bar-4"></div>
+                </div>
+                <p class="progress-text" id="progress-text-4">0%</p>
+                <button class="ver-clase" onclick="incrementProgress(4)">Ver Clase</button>
+            </div>
+        </div>
+    </div>
+    <div id="contenido3" class="items" style="display:none;">
+        <div class="content">
+            <div style="display: flex; flex-direction: column; gap: 10px;" class="card" data-curso="curso1" data-progress="0">
+                <div style="background-color: gray; height: 120px;">
+                    imagen
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <h4 style="color: black;">Tu viaje financiero</h4>
+                    <p style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div class="progress-container" >
+                    <div class="progress-bar" id="progress-bar-1"></div>
+                </div>
+                <p class="progress-text" id="progress-text-1">0%</p>
+                <button class="ver-clase" onclick="incrementProgress(1)">Ver Clase</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;" class="card" data-curso="curso2" data-progress="0">
+                <div style="background-color: gray; height: 120px;">
+                    imagen
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <h4 style="color: black;">Tu viaje financiero</h4>
+                    <p style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div class="progress-container" >
+                    <div class="progress-bar" id="progress-bar-2"></div>
+                </div>
+                <p class="progress-text" id="progress-text-2">0%</p>
+                <button class="ver-clase" onclick="incrementProgress(2)">Ver Clase</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;" class="card" data-curso="curso3" data-progress="0">
+                <div style="background-color: gray; height: 120px;">
+                    imagen
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <h4 style="color: black;">Tu viaje financiero</h4>
+                    <p style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div class="progress-container" >
+                    <div class="progress-bar" id="progress-bar-3"></div>
+                </div>
+                <p class="progress-text" id="progress-text-3">0%</p>
+                <button class="ver-clase" onclick="incrementProgress(3)">Ver Clase</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;" class="card" data-curso="curso4" data-progress="0">
+                <div style="background-color: gray; height: 120px;">
+                    imagen
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <h4 style="color: black;">Tu viaje financiero</h4>
+                    <p style="color: #8f8888;">Denise Marchena</p>
+                </div>
+                <div class="progress-container" >
+                    <div class="progress-bar" id="progress-bar-4"></div>
+                </div>
+                <p class="progress-text" id="progress-text-4">0%</p>
+                <button class="ver-clase" onclick="incrementProgress(4)">Ver Clase</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        mostrarContenido("contenido1", document.querySelector("button.texto-negro"));
+    });
+
+    function mostrarContenido(nombreContenido, boton) {
+        var elementosContenido = document.querySelectorAll('[id^="contenido"]');
+        elementosContenido.forEach(function (elemento) {
+            elemento.style.display = "none";
+        });
+
+        var contenidoMostrar = document.getElementById(nombreContenido);
+        contenidoMostrar.style.display = "block";
+
+        var botones = document.querySelectorAll("button");
+        botones.forEach(function (b) {
+            b.classList.remove("texto-negro");
+            b.classList.add("texto-gris");
+        });
+
+        boton.classList.remove("texto-gris");
+        boton.classList.add("texto-negro");
+    }
+
+    function incrementProgress(progressId) {
+        var curso = document.querySelector(`[data-curso="curso${progressId}"]`);
+        var progressContainer = curso.querySelector(".progress-container");
+        var progressBar = curso.querySelector(".progress-bar");
+        var progressText = curso.querySelector(".progress-text");
+
+        var currentProgress = parseInt(curso.getAttribute("data-progress"), 10);
+
+        if (currentProgress < 100) {
+            currentProgress += 10;
+            curso.setAttribute("data-progress", currentProgress);
+            updateProgress(progressContainer, progressBar, progressText, currentProgress);
+        }
+    }
+
+    function updateProgress(progressContainer, progressBar, progressText, currentProgress) {
+        progressBar.style.width = currentProgress + "%";
+        progressText.textContent = currentProgress + "%";
+
+        if (currentProgress === 0) {
+            progressContainer.style.display = "none";
+        } else {
+            progressContainer.style.display = "block";
+        }
+    }
+
+</script>
+{%endblock%}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<style>
+    .container{
+        margin: 0 !important;
+        min-width: 98.9vw !important;
+        height: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div style="background-color: #fff5ed; width: 100%; height: 257px;display: flex; align-items: center;justify-content: center; position: relative; overflow: hidden;">
+    <h1 style="text-align: center;">Verificación de pago</h1>    
+</div>
+<div style="display: flex; align-items: center; justify-content: center; flex-direction: column; margin-block-start: 50px;">
+    <div>
+        <p>Dirección de Envio</p>
+        <div style="display: flex; justify-content: space-between;">
+            <p>País</p>
+            <p>Requerido</p>
+        </div>
+        <div style="border: 1px solid black; height: 25px;"></div>
+        <div style="display: flex; align-items: center; flex-direction: column;">
+            <p>Money Master está obligado por la ley a recuadar los impuestos</p>
+            <p>sobre transacciones aplicables a las compras realizadas en</p>
+            <p>determinadas jurisdicciones fiscales.</p>
+        </div>
+    </div>
+    <div>
+        <p>Método de pago</p>
+        <div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
