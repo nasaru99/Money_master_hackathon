@@ -7,29 +7,57 @@
         min-width: 98.9vw !important;
         height: 100%;
     }
+    .location .info{
+        font-size:20px;
+        line-height:27px;
+        color: #808080;
+    }
+    .location p{
+        font-size:40px;
+        line-height:41px;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <div style="background-color: #fff5ed; width: 100%; height: 257px;display: flex; align-items: center;justify-content: center; position: relative; overflow: hidden;">
-    <h1 style="text-align: center;">Verificación de pago</h1>    
+    <h1 style="text-align: center;font-size:60px; line-height:82px;">Verificación de pago</h1>    
 </div>
-<div style="display: flex; align-items: center; justify-content: center; flex-direction: column; margin-block-start: 50px;">
-    <div>
-        <p>Dirección de Envio</p>
-        <div style="display: flex; justify-content: space-between;">
-            <p>País</p>
-            <p>Requerido</p>
+<div style="display: flex; align-items: center; justify-content: center; flex-direction: row;">
+    <div style="width:50%; display:flex; align-items:center;flex-direction:column;">
+        <div class="location">
+            <h2 style="font-size:60px; line-height:82px; margin-block-end:58px;">Dirección de Envio</h2>
+            <div style="width:516px; margin-block-end:54px;">
+                <div style="display: flex; justify-content: space-between; margin-block-end:29px;">
+                    <p>País</p>
+                    <p>Requerido</p>
+                </div>
+                <div style="border: 1px solid black; height: 79px; width:516px;"></div>
+            </div>
+            <div style="display: flex; align-items: center; flex-direction: column;">
+                <p class="info">Money Master está obligado por la ley a recuadar los impuestos</p>
+                <p class="info">sobre transacciones aplicables a las compras realizadas en</p>
+                <p class="info">determinadas jurisdicciones fiscales.</p>
+            </div>
         </div>
-        <div style="border: 1px solid black; height: 25px;"></div>
-        <div style="display: flex; align-items: center; flex-direction: column;">
-            <p>Money Master está obligado por la ley a recuadar los impuestos</p>
-            <p>sobre transacciones aplicables a las compras realizadas en</p>
-            <p>determinadas jurisdicciones fiscales.</p>
+        <div>
+            <h2 style="font-size:60px; line-height:82px; margin-block-end:48px;margin-block-start:54px;">Método de pago</h2>
+            <div style="border: 1px solid black; height:1000px; width:600px;">
+                <form>
+                    <div style="background-color:#fef8f8; height: 79px; font-size:30px; line-height:41.49px; border: 1px solid black;">
+                        <input type="radio" id="card" name="payment" value="card">
+                        <label for="card">Tarjeta de credito/Debito</label>
+                    </div>
+                    <div style="background-color:#fef8f8; height: 79px; font-size:30px; line-height:41.49px; border: 1px solid black;">
+                        <input type="radio" id="paypal" name="payment" value="paypal">
+                        <label for="card">Paypal</label>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    <div>
-        <p>Método de pago</p>
+    <div style="background-color:#fdf5ed; width:50%; height:100%;">
+        <h2>Resumen de compra</h2>
         <div>
 
         </div>

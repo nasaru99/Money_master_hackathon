@@ -1,0 +1,27 @@
+{% load custom_filters %}
+
+    <form method="GET" action="{% url 'buscar' %}">
+        <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Buscar...">
+        <button type="submit">Buscar</button>
+    </form>
+
+    {% if resultados %}
+    <ul>
+    {% for resultado in resultados %}
+        <li>
+            {% if resultado|class_name == "PerfilUsuario" %}
+                <a href="{% url 'perfil_usuario' username=resultado.usuario.username %}">{{ resultado.usuario.username }}</a>
+            
+            {% else %}
+                {# Aquí deberás personalizar cómo deseas mostrar cada tipo de objeto #}
+                {{ resultado }}
+            {% endif %}
+        </li>
+        li
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No se encontraron resultados.</p>
+{% endif %}
+
+

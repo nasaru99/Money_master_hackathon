@@ -22,23 +22,38 @@
         border: none;
         gap: 20px   ;
     }
+    .card .image{
+        background-color: #dadada;
+        width: 400px;
+        height: 300px;
+    }
+    .card .title,.author,.price,.rate,.amount{
+        font-size:40px; 
+        line-height:55px;
+    }
+    .card .author{
+        color: #8C8787;
+    }
+    .card .amount{
+        color: #d1d2d4;
+    }
     hr{
         border: 1.5px solid black;
-        width: 500px;
+        width: 1000px;
     }
 </style>
 {% endblock %}
 {% block content %}
     <div style="background-color: #fdf5ee; height: 257px;display: flex; align-items: center;justify-content: center;">
-        <h1 style="text-align: center; padding-block: 50px;">Carro de compras</h1>
+        <h1 style="text-align: center; padding-block: 50px;font-size:60px; line-height:82px;">Carro de compras</h1>
     </div>
     <div class="content">
         <div>
-            <h2 style="margin: 0;">4 cursos en el carrito</h2>
+            <h2 style="margin: 0; font-size:60px; line-height:82px;">4 cursos en el carrito</h2>
             <hr style="margin: 0;">
         </div>
         <div class="card">
-            <div class="image" style="background-color: #dadada; width: 200px;">
+            <div class="image">
                 imagen
             </div>
             <div>
@@ -56,7 +71,7 @@
         </div>
         <hr>
         <div class="card">
-            <div class="image" style="background-color: #dadada; width: 200px;">
+            <div class="image">
                 imagen
             </div>
             <div>
@@ -74,7 +89,7 @@
         </div>
         <hr>
         <div class="card">
-            <div class="image" style="background-color: #dadada; width: 200px;">
+            <div class="image">
                 imagen
             </div>
             <div>
@@ -92,7 +107,7 @@
         </div>
         <hr>
         <div class="card">
-            <div class="image" style="background-color: #dadada; width: 200px;">
+            <div class="image">
                 imagen
             </div>
             <div>
