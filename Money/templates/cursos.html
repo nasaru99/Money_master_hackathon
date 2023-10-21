@@ -1,0 +1,28 @@
+{% extends "contenido/base.html" %}
+{% block content %}
+<div class="container">
+
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="todos" role="tabpanel">
+            <!-- Aquí se mostrarán todos los cursos -->
+            {% for curso in cursos %}
+            <div class="card">
+                <img src="{{ curso.imagen.url }}" class="card-img-top" alt="{{ curso.titulo }}">
+                <div class="card-body">
+                    <!-- Aquí agregamos el enlace al título -->
+                    <h5 class="card-title">
+                        <a href="{% url 'detalle_curso' curso.id %}">{{ curso.titulo }}</a>
+                    </h5>
+                    <p class="card-text">{{ curso.descripcion|truncatechars:100 }}</p>
+                    <!-- Barra de progreso -->
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: {{ curso.lecciones_completadas }}%;" aria-valuenow="{{ curso.lecciones_completadas }}" aria-valuemin="0" aria-valuemax="100">{{ curso.lecciones_completadas }}%</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+{% endblock %}

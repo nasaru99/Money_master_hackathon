@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<!-- Aquí puedes añadir estilos adicionales si lo requieres -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/mensaje_pago.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="message-box">
+        <h2>Mensaje Importante</h2>
+        <p>{{ mensaje }}</p>
+        <!-- Opcional: Puedes añadir un botón que redirija al usuario a la página de pagos -->
+        <a href="#" class="btn btn-primary">Realizar Pago</a>
+    </div>
+</div>
+<br>
+<br>
+{% endblock %}

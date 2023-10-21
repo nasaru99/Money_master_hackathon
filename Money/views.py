@@ -119,6 +119,24 @@ def index_contenido(request):
     return render(request, 'contenido/inicio.html', context)
 
 
+def index_contenido_sin_inicio(request):
+     # Todos los cursos
+    cursos = Curso.objects.all()
+
+    # Cursos en progreso del usuario actual
+    
+    # Cursos en la lista de deseos del usuario actual
+   
+
+    context = {
+        'cursos': cursos,
+       
+        
+    }
+
+    return render(request, 'cursos.html', context)
+
+
 # Gestion de cursos
 
 @login_required
@@ -136,11 +154,24 @@ def contenido_leccion(request, leccion_id):
     leccion = get_object_or_404(Leccion, id=leccion_id)
     contenido = leccion.contenido
 
+    # Verificar si el usuario está inscrito en el curso de la lección
+    try:
+        inscripcion = InscripcionCurso.objects.get(usuario=request.user, curso=leccion.curso)
+    except InscripcionCurso.DoesNotExist:
+        inscripcion = None
+
+    if not inscripcion:
+        # Si el usuario no está inscrito, muestra un mensaje para que realice el pago
+        context = {
+            'mensaje': 'Para ver el contenido deberá hacer el pago pertinente.'
+        }
+        return render(request, 'mensaje.html', context)  # Cambia 'ruta_a_template_de_mensaje.html' con la ruta correcta de tu template donde mostrarás el mensaje
+
     # Verificar si el usuario ha respondido a todas las preguntas de la lección
     preguntas = Pregunta.objects.filter(leccion=leccion)
     respuestas_usuario = RespuestaUsuario.objects.filter(usuario=request.user, pregunta__in=preguntas)
 
-    # Si el usuario no ha respondido a todas las preguntas o ha respondido incorrectamente, redirigirlo a la página de preguntas
+    # Aquí puedes continuar con tu lógica sobre si el usuario ha respondido o no a todas las preguntas...
 
     context = {
         'leccion': leccion,
@@ -471,8 +502,7 @@ def user_login(request):
     return render(request, 'login.html', {'form': form})
 
 
-from django.core.files import File
-import os
+
 
 def registro_view(request):
     if request.method == 'POST':
@@ -484,16 +514,6 @@ def registro_view(request):
             
             perfil = perfil_form.save(commit=False)
             perfil.usuario = user
-
-            # Verificar si no se ha proporcionado una imagen de perfil
-            if not perfil.foto_perfil:
-                # Establecer la imagen por defecto usando la ruta absoluta
-                default_image_path = r'C:\Users\Asdrual Lezama\Desktop\Money_master_hackathon\media\fotos_perfil_usuarios\user.jpg'
-                perfil.foto_perfil.save(
-                    'default/user.jpg',
-                    File(open(default_image_path, 'rb'))
-                )
-
             perfil.save()
             
             login(request, user)
@@ -504,6 +524,7 @@ def registro_view(request):
         perfil_form = PerfilUsuarioForm()
 
     return render(request, 'registro.html', {'user_form': user_form, 'perfil_form': perfil_form})
+
 
 class SignUpView(CreateView):
     model = User  # Especifica el modelo User

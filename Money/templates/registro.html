@@ -1,44 +1,16 @@
 {% extends 'base.html' %}
-{% load static %}
-
-{% block extra_head %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/registro.css' %}">
-{% endblock %}
 
 {% block content %}
-<!-- Fondo de pantalla -->
-<div class="background-image"></div>
 
-<!-- Contenedor principal -->
-<div class="container">
-    <!-- Card for User Form -->
-    <div class="card" id="userCard">
-        <h2>Información de Usuario</h2>
-        <form id="userForm" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <!-- User Form Fields -->
-            {{ user_form.as_p }}
-            <button type="button" id="nextBtn">Siguiente</button>
-        </form>
-    </div>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
 
-    <!-- Card for Perfil Form -->
-    <div class="card" id="perfilCard" style="display: none;">
-        <h2>Información de Perfil</h2>
-        <form id="perfilForm" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <!-- Perfil Form Fields -->
-            {{ perfil_form.as_p }}
-            <button type="submit">Registrar</button>
-        </form>
-    </div>
-</div>
+    <!-- Campos de usuario -->
+    {{ user_form.as_p }}
 
-<script>
-    document.getElementById("nextBtn").addEventListener("click", function() {
-        document.getElementById("userCard").style.display = "none";
-        document.getElementById("perfilCard").style.display = "block";
-    });
-</script>
+    <!-- Campos de perfil -->
+    {{ perfil_form.as_p }}
 
+    <button type="submit">Registrar</button>
+</form>
 {% endblock %}
