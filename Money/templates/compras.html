@@ -140,6 +140,59 @@
         }
     }
 
+    /* Estilos para el contenedor de la tarjeta */
+.card {
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+    margin-bottom: 20px;
+    transition: all 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+/* Estilos para la imagen del curso */
+.card .image {
+    width: 30%; /* Puedes ajustar este valor según tus necesidades */
+    display: inline-block;
+    vertical-align: top;
+}
+
+.card .image img {
+    max-width: 100%;
+    display: block;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+/* Estilos para el contenido de la tarjeta */
+.card > div {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.title {
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
+
+.author {
+    margin: 10px 0;
+    color: #8f8888;
+}
+
+.price {
+    font-weight: bold;
+    color: #333;
+}
+
 </style>
 {% endblock %}
 
@@ -175,13 +228,12 @@
     <div style="border: 1px solid black; border-radius:20px; width: 588px; height: 322px; padding: 15px; display: flex;align-items:center; flex-direction: column;" class="details-first">
         <p style="font-size:30px; line-height:40px; color:#8C8787; text-align: start;">Total:</p>
         <div style="text-align: center;">
-            <p style="font-size:25px; line-height:35px;">${{ total_con_descuento }}</p>
-            <p style="color: gray; font-size:25px; line-height:35px;"><del>${{ total }}</del></p>
-            <p style="font-size:25px; line-height:35px;">2% de descuento</p>
+            <p>${{ total_con_descuento }}</p>
+            <p style="color: gray;"><del>${{ total }}</del></p>
+            <p>2% de descuento</p>
         </div>
         <!-- Aquí puedes agregar la lógica para redirigir al proceso de pago -->
-        <button style="border-radius: 25px; background-color: #d8c6ff; width: 265px; height: 47px; font-size: 20px; line-height:30px;">VERIFICAR</button>
-    </div>
+        <a href="{% url 'pago' curso.id %}"><button>APLICAR</button></a>
     <div style="width: 391px; height: 151px;padding: 10px; border: 1px solid black; background-color: #fff7f7; display: flex; flex-direction: column; align-items: center;" class="details-second">
         <p style="font-size:30px; line-height:40px;">Promociones</p>
         <div style="display:flex; flex-direction:row; align-items:center;">

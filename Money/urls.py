@@ -15,7 +15,8 @@ urlpatterns = [
     path('aprendizaje/', views.aprendizaje, name='aprendizaje'),
     path('compras/<int:curso_id>/', views.compras, name='compras'),
 
-    path('pago', views.pago, name='pago'),
+   path('pago/<int:curso_id>/', views.pago, name='pago'),
+
     # Rutas para la gestión de servicios
     path('search/', views.youtube_search, name='youtube_search'),
     path('enviar_mensaje/', views.enviar_mensaje, name='enviar_mensaje'),

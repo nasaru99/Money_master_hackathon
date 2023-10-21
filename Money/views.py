@@ -730,30 +730,57 @@ def compras(request, curso_id):
     curso_seleccionado = get_object_or_404(Curso, id=curso_id)
 
     # Verificar si el usuario ha inscrito este curso pero aún no ha pagado
-    inscripcion = InscripcionCurso.objects.filter(usuario=usuario_actual, curso=curso_seleccionado).first()
-    if inscripcion and not CursoComprado.objects.filter(curso=curso_seleccionado).exists():
-        curso_no_pagado = curso_seleccionado
-        total = curso_no_pagado.precio
-        descuento = total * Decimal('0.02')  # Convertir 0.02 a Decimal antes de multiplicar
-        total_con_descuento = total - descuento
-    else:
-        # Si el curso ya fue comprado o no hay inscripción, entonces no hay total ni descuento
-        curso_no_pagado = None
-        total = Decimal('0.00')
-        descuento = Decimal('0.00')
-        total_con_descuento = Decimal('0.00')
+    total = curso.precio
+    descuento = total * Decimal('0.02')  # Convertir 0.02 a Decimal antes de multiplicar
+    total_con_descuento = total - descuento
 
     context = {
         'curso': curso,
-        'curso_no_pagado': curso_no_pagado,
+       
         'total': total,
         'descuento': descuento,
         'total_con_descuento': total_con_descuento
     }
 
     return render(request, 'compras.html', context)
-def pago(request):
-    return render(request, 'pago.html')
+
+def pago(request, curso_id):
+    print("inicia")
+    curso = get_object_or_404(Curso, id=curso_id)
+    if request.method == "POST":
+        # Crear una inscripción para el curso
+        inscripcion, created = InscripcionCurso.objects.get_or_create(
+            usuario=request.user,
+            curso=curso
+        )
+        
+        # Imprimir detalles sobre la inscripción
+        if created:
+            print(f"Se creó una nueva inscripción para el usuario {request.user.username} en el curso {curso.titulo}.")
+        else:
+            print(f"El usuario {request.user.username} ya estaba inscrito en el curso {curso.titulo}.")
+        
+        # Crear un registro de pago
+        pago = Pago.objects.create(
+            monto=curso.precio,
+            descripcion=f"Pago para el curso {curso.titulo}",
+            metodo_pago="El método de pago que uses",
+            estado="Pendiente",
+            usuario=request.user
+        )
+        
+        # Imprimir detalles sobre el pago
+        print(f"Se creó un nuevo registro de pago con ID {pago.id} para el usuario {request.user.username} con un monto de {curso.precio}.")
+        
+        # Redirigir al usuario a una página de confirmación o al curso
+        return redirect('index_contenido')
+        
+    context = {
+        'curso': curso
+    }
+    print("termina")
+    return render(request, 'pago.html', context)
+
 
 def explorador(request):
     return render(request, 'explorador.html')

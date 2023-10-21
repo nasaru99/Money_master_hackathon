@@ -137,36 +137,39 @@
             <h3 style="margin-block-end:37px;margin-block-start:70px; font-size:30px;line-height:41.49px;margin-inline-start:45px;"><b>Detalles del pedido</b></h3>
             <div style="display:flex; flex-direction:column; gap:20px;font-size:30px;line-height:41.49px;margin-inline-start:45px;margin-block-end:115px;">
                 <div style="display:flex; flex-direction:row; gap:56px;">
-                    <h4>Tu Viaje Financiero: D..</h4>
-                    <p> 50$</p>
+                    <h4>{{ curso.titulo }}</h4>
+                    <p>${{ curso.precio }}</p>
                 </div>
-                <div style="display:flex; flex-direction:row; gap:56px;">
-                    <h4>Tu Viaje Financiero: D..</h4>
-                    <p> 50$</p>
-                </div>
+                
             </div>
         </div>
     </div>
     <div style="background-color: #fdf5ed; width: 50%;" id="columna-derecha">
         <p style="margin-block-start:58px;margin-block-end:70px;text-align:center;font-size:60px;line-height:82.98px;">Resumen de compra</p>
-        <div>
-            <div class="detail" style="display:flex; justify-content:space-between; margin-inline:140px;">
-                <p style="font-size:30px; line-height:41.49px;">Precio original:</p>
-                <p style="font-size:30px; line-height:41.49px;">50$</p>
-            </div>
-            <div class="detail" style="display:flex; justify-content:space-between; margin-inline:152px;">
-                <p style="font-size:30px; line-height:41.49px;">Descuentos:</p>
-                <p style="font-size:30px; line-height:41.49px;">2$</p>
-            </div>
-            <hr style="width:740px; border:1px solid black;" class="hr">
-            <div class="detail" style="display:flex; justify-content:space-between; margin-inline-start:195px;margin-inline-end:140px;">
-                <p style="font-size:30px; line-height:41.49px;"><b>Total:</b></p>
-                <p style="font-size:30px; line-height:41.49px;"><b>48$</b></p>
-            </div>
-            <p style="text-align:center;font-size:30px; line-height:41.49px;">Al completar esta compra, acepta estos terminos de servicio.</p>
-        </div>
+<div>
+    <div class="detail" style="display:flex; justify-content:space-between; margin-inline:140px;">
+        <p style="font-size:30px; line-height:41.49px;">Precio original:</p>
+        <p style="font-size:30px; line-height:41.49px;">${{ curso.precio }}</p>
+    </div>
+    <div class="detail" style="display:flex; justify-content:space-between; margin-inline:152px;">
+        <p style="font-size:30px; line-height:41.49px;">Descuentos:</p>
+        <p style="font-size:30px; line-height:41.49px;">${{ descuento }}</p>
+    </div>
+    <hr style="width:740px; border:1px solid black;" class="hr">
+    <div class="detail" style="display:flex; justify-content:space-between; margin-inline-start:195px;margin-inline-end:140px;">
+        <p style="font-size:30px; line-height:41.49px;"><b>Total:</b></p>
+        <p style="font-size:30px; line-height:41.49px;"><b>${{ total }}</b></p>
+    </div>
+    <p style="text-align:center;font-size:30px; line-height:41.49px;">Al completar esta compra, acepta estos términos de servicio.</p>
+</div>
+
         <div style="display:flex; align-content:center; justify-content:center; margin-block-start:35px;">
-            <button style="width:638px; height:138px; border-radius:20px;background-color:#f6efe9;font-size:40px;line-height:55.32px;"><b>Completar pago</b></button>
+            <form method="post" >
+                {% csrf_token %}
+                <!-- Puedes agregar más detalles aquí, como información del curso, etc. -->
+                <button type="submit">Pagar</button>
+            </form>
+            
         </div>
     </div>
 </div>

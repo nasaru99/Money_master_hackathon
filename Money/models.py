@@ -345,6 +345,7 @@ class Pago(models.Model):
     metodo_pago = models.CharField(max_length=50)
     estado = models.CharField(max_length=15, choices=[('Pendiente', 'Pendiente'), ('Completado', 'Completado'), ('Rechazado', 'Rechazado')], default='Pendiente')
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+
 class CursoComprado(models.Model):
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     pago = models.ForeignKey(Pago, on_delete=models.CASCADE)
