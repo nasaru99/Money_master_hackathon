@@ -23,6 +23,7 @@ import datetime
 from django.shortcuts import render, redirect
 from .models import Curso, InscripcionCurso, ProgresoLeccion
 from .forms import CursoForm, LeccionForm
+from .models import Imagen
 
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -88,7 +89,6 @@ def buscar(request):
     return render(request, 'buscar.html', {'resultados': resultados})
 
 
-
 def index(request):
     cursos = Curso.objects.all()[:10]  # Obtener los primeros 10 cursos
     comentarios = Comentario.objects.filter(curso__in=cursos)  # Obtener los comentarios de esos cursos
@@ -96,16 +96,19 @@ def index(request):
     
     # Obtener las categorías principales
     categorias_principales = Curso.CATEGORIAS_CHOICES
+    
+    # Obtener las imágenes asociadas a las categorías principales utilizando el campo 'nombre'
+    imagenes_categorias = Imagen.objects.all()
 
     context = {
         'cursos': cursos,
         'comentarios': comentarios,
         'comentarios_segmentados': comentarios_segmentados,
-        'categorias_principales': categorias_principales  # Agrega esto
+        'categorias_principales': categorias_principales,
+        'imagenes_categorias': imagenes_categorias
     }
 
     return render(request, 'inicio.html', context)
-
 @login_required
 def index_contenido(request):
      # Todos los cursos
@@ -170,6 +173,7 @@ def contenido_leccion(request, leccion_id):
     if not inscripcion:
         # Si el usuario no está inscrito, muestra un mensaje para que realice el pago
         context = {
+            'leccion': leccion,
             'mensaje': 'Para ver el contenido deberá hacer el pago pertinente.'
         }
         return render(request, 'mensaje.html', context)  # Cambia 'ruta_a_template_de_mensaje.html' con la ruta correcta de tu template donde mostrarás el mensaje
@@ -714,11 +718,40 @@ def aprendizaje(request):
     return render(request, 'aprendizaje.html')
 
 def nosotros(request):
-    return render(request, 'Nos.html')
+    return render(request, 'Nosotros.html')
 
-def compras(request):
-    return render(request, 'compras.html')
+from .models import Curso, InscripcionCurso, Pago, CursoComprado
+from decimal import Decimal
+def compras(request, curso_id):
+    # Asumiendo que tienes un usuario logueado
+    usuario_actual = request.user
+    curso = get_object_or_404(Curso, id=curso_id)
+    # Obtener el curso específico usando get_object_or_404 para manejar casos donde el curso no exista
+    curso_seleccionado = get_object_or_404(Curso, id=curso_id)
 
+    # Verificar si el usuario ha inscrito este curso pero aún no ha pagado
+    inscripcion = InscripcionCurso.objects.filter(usuario=usuario_actual, curso=curso_seleccionado).first()
+    if inscripcion and not CursoComprado.objects.filter(curso=curso_seleccionado).exists():
+        curso_no_pagado = curso_seleccionado
+        total = curso_no_pagado.precio
+        descuento = total * Decimal('0.02')  # Convertir 0.02 a Decimal antes de multiplicar
+        total_con_descuento = total - descuento
+    else:
+        # Si el curso ya fue comprado o no hay inscripción, entonces no hay total ni descuento
+        curso_no_pagado = None
+        total = Decimal('0.00')
+        descuento = Decimal('0.00')
+        total_con_descuento = Decimal('0.00')
+
+    context = {
+        'curso': curso,
+        'curso_no_pagado': curso_no_pagado,
+        'total': total,
+        'descuento': descuento,
+        'total_con_descuento': total_con_descuento
+    }
+
+    return render(request, 'compras.html', context)
 def pago(request):
     return render(request, 'pago.html')
 

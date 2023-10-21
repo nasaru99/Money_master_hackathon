@@ -13,7 +13,8 @@ urlpatterns = [
     path('Contenido/', views.index_contenido, name='index_contenido'),
     path('Contenido/sin_inicio', views.index_contenido_sin_inicio, name='index_contenido_sin_inicio'),
     path('aprendizaje/', views.aprendizaje, name='aprendizaje'),
-    path('compras', views.compras, name = 'compras'),
+    path('compras/<int:curso_id>/', views.compras, name='compras'),
+
     path('pago', views.pago, name='pago'),
     # Rutas para la gestión de servicios
     path('search/', views.youtube_search, name='youtube_search'),

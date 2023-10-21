@@ -77,14 +77,10 @@
                     <a class="nav-link" href="{% url 'index' %}">Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Emprendedores</a>
+                    <a class="nav-link" href="{% url 'nosotros' %}">Sobre nosotros</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Jóvenes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Empresarios</a>
-                </li>
+
+
                 {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}">Cerrar Sesión</a>

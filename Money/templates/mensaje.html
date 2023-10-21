@@ -11,8 +11,9 @@
     <div class="message-box">
         <h2>Mensaje Importante</h2>
         <p>{{ mensaje }}</p>
-        <!-- Opcional: Puedes añadir un botón que redirija al usuario a la página de pagos -->
-        <a href="#" class="btn btn-primary">Realizar Pago</a>
+       
+       
+        <a href="{% url 'compras' curso_id=leccion.curso.id %}" class="btn btn-primary">Ir a Compras</a>
     </div>
 </div>
 <br>
