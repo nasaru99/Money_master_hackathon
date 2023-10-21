@@ -141,7 +141,9 @@ class PerfilUsuario(models.Model):
     # Nuevos campos para número de teléfono y código de país
     codigo_pais = models.CharField(max_length=10, null=True, blank=True)
     numero_telefono = models.CharField(max_length=15, null=True, blank=True)
-
+    token_acceso_youtube = models.TextField(blank=True, null=True)
+    token_actualizacion_youtube = models.TextField(blank=True, null=True)
+    id_canal = models.CharField(max_length=255, blank=True, null=True)
     @property
     def esta_suscrito(self):
         if self.fecha_fin_suscripcion:
@@ -356,3 +358,28 @@ class Amistad(models.Model):
     fecha_amistad = models.DateTimeField(auto_now_add=True)
     es_aceptada = models.BooleanField(default=False)  # Para manejar solicitudes de amistad pendientes
 
+# Gestión de youtube
+
+class TransmisionEnVivo(models.Model):
+    perfil_usuario = models.ForeignKey(PerfilUsuario, on_delete=models.CASCADE)
+    titulo = models.CharField(max_length=255)
+    descripcion = models.TextField()
+    id_transmision_youtube = models.CharField(max_length=255)  # ID de la transmisión en YouTube
+    id_stream_youtube = models.CharField(max_length=255)  # ID del stream asociado en YouTube
+    hora_inicio = models.DateTimeField(null=True, blank=True)
+    hora_fin = models.DateTimeField(null=True, blank=True)
+    estado = models.CharField(max_length=50, choices=[
+        ('proxima', 'Próxima'),
+        ('en_vivo', 'En Vivo'),
+        ('completada', 'Completada'),
+        ('cancelada', 'Cancelada'),
+    ])
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha_actualizacion = models.DateTimeField(auto_now=True)
+
+class AnalisisTransmision(models.Model):
+    transmision = models.OneToOneField(TransmisionEnVivo, on_delete=models.CASCADE)
+    total_espectadores = models.PositiveIntegerField(default=0)
+    maximo_espectadores = models.PositiveIntegerField(default=0)
+    tiempo_visionado_promedio = models.PositiveIntegerField(default=0)  # En segundos
+    # Otros campos relacionados con las estadísticas de la transmisión.

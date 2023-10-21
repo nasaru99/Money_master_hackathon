@@ -748,6 +748,7 @@ def pago(request, curso_id):
     print("inicia")
     curso = get_object_or_404(Curso, id=curso_id)
     if request.method == "POST":
+        print("inicia")
         # Crear una inscripción para el curso
         inscripcion, created = InscripcionCurso.objects.get_or_create(
             usuario=request.user,
@@ -784,3 +785,117 @@ def pago(request, curso_id):
 
 def explorador(request):
     return render(request, 'explorador.html')
+
+
+ # gestion de youtuve 
+from django.shortcuts import render, redirect
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+from .models import PerfilUsuario, TransmisionEnVivo
+
+
+
+def iniciar_transmision(request):
+    if request.method == 'POST':
+        # Recuperar el token de acceso del usuario
+        perfil = PerfilUsuario.objects.get(usuario=request.user)
+        token_acceso = perfil.token_acceso_youtube
+
+        # Configurar el cliente de la API de YouTube
+        youtube = build('youtube', 'v3', developerKey='TU_API_KEY', credentials=token_acceso)
+
+        # Crear el broadcast (transmisión) en YouTube
+        try:
+            broadcast = youtube.liveBroadcasts().insert(
+                part="snippet,status",
+                body={
+                    "snippet": {
+                        "title": "Título de la transmisión",
+                        "description": "Descripción de la transmisión",
+                        # Puedes añadir más campos según necesites
+                    },
+                    "status": {
+                        "privacyStatus": "public"  # Puede ser 'public', 'unlisted' o 'private'
+                    }
+                }
+            ).execute()
+
+            # Guardar los detalles del broadcast en la base de datos
+            TransmisionEnVivo.objects.create(
+                perfil_usuario=perfil,
+                titulo=broadcast["snippet"]["title"],
+                descripcion=broadcast["snippet"]["description"],
+                id_transmision_youtube=broadcast["id"],
+                # Otros campos que quieras guardar
+            )
+
+            return redirect('lista_transmisiones')
+
+        except HttpError as e:
+            # Manejar los errores de la API de YouTube
+            print(f"Ocurrió un error: {e}")
+
+    return render(request, 'iniciar_transmision.html')
+
+
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import Flow
+from django.urls import reverse
+from django.shortcuts import redirect
+from django.conf import settings
+
+def iniciar_oauth2(request):
+    # Crear un flujo de autenticación
+    flow = Flow.from_client_config({
+        "web": {
+            "client_id": settings.GOOGLE_OAUTH2_CLIENT_ID,
+            "client_secret": settings.GOOGLE_OAUTH2_CLIENT_SECRET,
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://oauth2.googleapis.com/token",
+            "redirect_uris": [
+                request.build_absolute_uri(reverse('oauth2callback'))
+            ],
+        }
+    }, scopes=["https://www.googleapis.com/auth/youtube.force-ssl"])
+    
+    # Obtener la URL de autorización
+    authorization_url, state = flow.authorization_url(
+        access_type='offline',
+        include_granted_scopes='true'
+    )
+
+    # Guardar el estado en la sesión para usarlo luego
+    request.session['state'] = state
+
+    return redirect(authorization_url)
+
+def oauth2callback(request):
+    state = request.session.pop('state', '')
+    
+    flow = Flow.from_client_config({
+        "web": {
+            "client_id": settings.GOOGLE_OAUTH2_CLIENT_ID,
+            "client_secret": settings.GOOGLE_OAUTH2_CLIENT_SECRET,
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://oauth2.googleapis.com/token",
+            "redirect_uris": [
+                request.build_absolute_uri(reverse('oauth2callback'))
+            ],
+        }
+    }, scopes=["https://www.googleapis.com/auth/youtube.force-ssl"], state=state)
+    flow.redirect_uri = request.build_absolute_uri(reverse('oauth2callback'))
+    
+    # Obtener tokens
+    flow.fetch_token(authorization_response=request.build_absolute_uri())
+    
+    # Guardar los tokens en el modelo PerfilUsuario
+    perfil = PerfilUsuario.objects.get(usuario=request.user)
+    perfil.token_acceso_youtube = flow.credentials.token
+    perfil.token_actualizacion_youtube = flow.credentials.refresh_token
+    # Aquí también puedes obtener y guardar el id_canal si es necesario
+    perfil.save()
+
+    return redirect('ruta_donde_redirigir_despues_de_la_autenticacion')
+
+def youtube_auth(request):
+    return render(request, 'youtube_auth.html')

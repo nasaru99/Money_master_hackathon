@@ -1,11 +1,65 @@
 {% extends "base.html" %}
+
 {% block content %}
-  <h2>Solicitar recuperación de contraseña</h2>
-  <form method="post">
-    {% csrf_token %}
-    <label for="email">Correo Electrónico:</label>
-    <input type="email" name="email" required>
-    <button type="submit">Enviar solicitud</button>
-  </form>
+<style>
+    .recovery-form-container {
+        width: 80%;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #f9f9f9;
+    }
+
+    .recovery-form-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .recovery-form-container form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .recovery-form-container label {
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .recovery-form-container input {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+
+    .recovery-form-container button {
+        padding: 10px 15px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .recovery-form-container button:hover {
+        background-color: #45a049;
+    }
+</style>
+
+<div class="recovery-form-container">
+    <h2>Solicitar recuperación de contraseña</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="email">Correo Electrónico:</label>
+        <input type="email" name="email" required>
+        <button type="submit">Enviar solicitud</button>
+    </form>
 </div>
+<br>
+<br>
 {% endblock %}

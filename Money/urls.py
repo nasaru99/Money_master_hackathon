@@ -52,6 +52,9 @@ urlpatterns = [
     path('contenido/gestionar_publicacion/<int:publicacion_id>/', views.gestionar_publicacion, name='gestionar_publicacion_con_id'),
 
     # Otras rutas ...
+    path('iniciar_oauth2/', views.iniciar_oauth2, name='iniciar_oauth2'),
+    path('oauth2callback/', views.oauth2callback, name='oauth2callback'),
+    path('youtube_auth/', views.oauth2callback, name='youtube_auth'),
 
 ]
 

@@ -156,6 +156,9 @@ EMAIL_HOST_PASSWORD = 'hpocidnyfnktpfyz'  # Tu contraseña de Gmail
 
 YOUTUBE_API_KEY = 'AIzaSyDwFTYOkq4X43rnBvoeXRE9dtzSrlyt72A'
 
+GOOGLE_OAUTH2_CLIENT_ID = '711545168062-uvq9opsk6jol216rhsikbnt3r6rg86jf.apps.googleusercontent.com'
+GOOGLE_OAUTH2_CLIENT_SECRET = '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'
+
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
