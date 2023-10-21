@@ -471,36 +471,39 @@ def user_login(request):
     return render(request, 'login.html', {'form': form})
 
 
-
-
+from django.core.files import File
+import os
 
 def registro_view(request):
-    print("comienza")
     if request.method == 'POST':
         user_form = CustomUserCreationForm(request.POST)
         perfil_form = PerfilUsuarioForm(request.POST, request.FILES)
-        print("comienza primer if")
         
-            # Guardar el usuario
-        user = user_form.save()
-        print("comienzasegundo if")
-        # Guardar el perfil de usuario
-        perfil = perfil_form.save(commit=False)
-        perfil.usuario = user
-        perfil.save()
-        print("termina crear perfil")
-            # Iniciar sesión automáticamente después del registro
-        login(request, user)
+        if user_form.is_valid() and perfil_form.is_valid():
+            user = user_form.save()
             
-        return redirect('inicio')  # Cambia 'inicio' por la URL a la que deseas redirigir después del registro
+            perfil = perfil_form.save(commit=False)
+            perfil.usuario = user
 
+            # Verificar si no se ha proporcionado una imagen de perfil
+            if not perfil.foto_perfil:
+                # Establecer la imagen por defecto usando la ruta absoluta
+                default_image_path = r'C:\Users\Asdrual Lezama\Desktop\Money_master_hackathon\media\fotos_perfil_usuarios\user.jpg'
+                perfil.foto_perfil.save(
+                    'default/user.jpg',
+                    File(open(default_image_path, 'rb'))
+                )
+
+            perfil.save()
+            
+            login(request, user)
+            
+            return redirect('index_contenido')
     else:
-        print("comienza user form")
         user_form = CustomUserCreationForm()
         perfil_form = PerfilUsuarioForm()
 
     return render(request, 'registro.html', {'user_form': user_form, 'perfil_form': perfil_form})
-
 
 class SignUpView(CreateView):
     model = User  # Especifica el modelo User
@@ -683,10 +686,13 @@ def aprendizaje(request):
     return render(request, 'aprendizaje.html')
 
 def nosotros(request):
-    return render(request, 'Nosotros.html')
+    return render(request, 'Nos.html')
 
 def compras(request):
     return render(request, 'compras.html')
 
 def pago(request):
     return render(request, 'pago.html')
+
+def explorador(request):
+    return render(request, 'explorador.html')

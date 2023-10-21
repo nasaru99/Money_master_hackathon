@@ -1,96 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Registro</title>
-</head>
-<body>
-    <h1>Registro</h1>
+{% extends 'base.html' %}
+{% load static %}
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        
-        {{ user_form.non_field_errors }}
-        
-        <div class="fieldWrapper">
-            {{ user_form.username.label_tag }}
-            {{ user_form.username }}
-            {{ user_form.username.errors }}
-        </div>
-        
-        <div class="fieldWrapper">
-            {{ user_form.email.label_tag }}
-            {{ user_form.email }}
-            {{ user_form.email.errors }}
-        </div>
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/registro.css' %}">
+{% endblock %}
 
-        <div class="fieldWrapper">
-            {{ user_form.password1.label_tag }}
-            {{ user_form.password1 }}
-            {{ user_form.password1.errors }}
-        </div>
+{% block content %}
+<!-- Fondo de pantalla -->
+<div class="background-image"></div>
 
-        <div class="fieldWrapper">
-            {{ user_form.password2.label_tag }}
-            {{ user_form.password2 }}
-            {{ user_form.password2.errors }}
-        </div>
-        
-        {{ perfil_form.non_field_errors }}
-        
-        <div class="fieldWrapper">
-            {{ perfil_form.foto.label_tag }}
-            {{ perfil_form.foto }}
-            {{ perfil_form.foto.errors }}
-        </div>
-        
-        <div class="fieldWrapper">
-            {{ perfil_form.nivel_educativo.label_tag }}
-            {{ perfil_form.nivel_educativo }}
-            {{ perfil_form.nivel_educativo.errors }}
-        </div>
+<!-- Contenedor principal -->
+<div class="container">
+    <!-- Card for User Form -->
+    <div class="card" id="userCard">
+        <h2>Información de Usuario</h2>
+        <form id="userForm" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- User Form Fields -->
+            {{ user_form.as_p }}
+            <button type="button" id="nextBtn">Siguiente</button>
+        </form>
+    </div>
 
-        <div class="fieldWrapper">
-            {{ perfil_form.ubicacion.label_tag }}
-            {{ perfil_form.ubicacion }}
-            {{ perfil_form.ubicacion.errors }}
-        </div>
-
-        <div class="fieldWrapper">
-            {{ perfil_form.fecha_nacimiento.label_tag }}
-            {{ perfil_form.fecha_nacimiento }}
-            {{ perfil_form.fecha_nacimiento.errors }}
-        </div>
-
-        <div class="fieldWrapper">
-            {{ perfil_form.genero.label_tag }}
-            {{ perfil_form.genero }}
-            {{ perfil_form.genero.errors }}
-        </div>
-
-        <div class="fieldWrapper">
-            {{ perfil_form.codigo_pais.label_tag }}
-            {{ perfil_form.codigo_pais }}
-            {{ perfil_form.codigo_pais.errors }}
-        </div>
-
-        <div class="fieldWrapper">
-            {{ perfil_form.numero_telefono.label_tag }}
-            {{ perfil_form.numero_telefono }}
-            {{ perfil_form.numero_telefono.errors }}
-        </div>
-
-        <input type="submit" value="Registrarse">
-    </form>
-    {% if user_form.errors %}
-<div class="alert alert-danger">
-    <ul>
-        {% for error in user_form.errors %}
-            <li>{{ error }}</li>
-        {% endfor %}
-    </ul>
+    <!-- Card for Perfil Form -->
+    <div class="card" id="perfilCard" style="display: none;">
+        <h2>Información de Perfil</h2>
+        <form id="perfilForm" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- Perfil Form Fields -->
+            {{ perfil_form.as_p }}
+            <button type="submit">Registrar</button>
+        </form>
+    </div>
 </div>
-{% endif %}
 
-</body>
-</html>
+<script>
+    document.getElementById("nextBtn").addEventListener("click", function() {
+        document.getElementById("userCard").style.display = "none";
+        document.getElementById("perfilCard").style.display = "block";
+    });
+</script>
+
+{% endblock %}

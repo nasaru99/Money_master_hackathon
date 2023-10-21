@@ -17,7 +17,7 @@ urlpatterns = [
     # Rutas para la gestión de servicios
     path('search/', views.youtube_search, name='youtube_search'),
     path('enviar_mensaje/', views.enviar_mensaje, name='enviar_mensaje'),
-
+    path('explorador', views.explorador, name='explorador'),
     # Rutas para la gestión de usuario
     path('signup/', views.SignUpView.as_view(), name='signup'),
     path('login/', views.user_login, name='login'),

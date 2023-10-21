@@ -9,6 +9,135 @@ from .models import Publicacion, Contenido
 from .models import Curso, Leccion
 
 
+class PerfilUsuarioForm(forms.ModelForm):
+    
+    # Ya definidos anteriormente:
+    foto_perfil = forms.ImageField(
+        label='Foto de perfil',
+        widget=forms.FileInput(attrs={
+            'class': 'form-control'
+        })
+    )
+    foto_portada = forms.ImageField(
+        label='Foto de portada',
+        widget=forms.FileInput(attrs={
+            'class': 'form-control'
+        })
+    )
+    biografia = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'rows': 5,
+            'placeholder': 'Breve biografía...'
+        }),
+        label='Biografía'
+    )
+    rol_trabajo = forms.ChoiceField(
+        widget=forms.Select(attrs={
+            'class': 'form-control'
+        }),
+        label='Rol de trabajo'
+    )
+    nivel_educativo = forms.ChoiceField(
+        widget=forms.Select(attrs={
+            'class': 'form-control'
+        }),
+        label='Nivel educativo'
+    )
+    enlace_facebook = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enlace a Facebook'
+        }),
+        label='Facebook'
+    )
+    enlace_youtube = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enlace a YouTube'
+        }),
+        label='YouTube'
+    )
+
+    # Añadiendo estilos a los campos restantes:
+    fecha_inicio_suscripcion = forms.DateField(
+        widget=forms.DateInput(attrs={
+            'class': 'form-control',
+            'type': 'date'
+        }),
+        label='Fecha inicio de suscripción'
+    )
+    fecha_fin_suscripcion = forms.DateField(
+        widget=forms.DateInput(attrs={
+            'class': 'form-control',
+            'type': 'date'
+        }),
+        label='Fecha fin de suscripción'
+    )
+    numero_seguidores = forms.IntegerField(
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control'
+        }),
+        label='Número de seguidores'
+    )
+    numero_videos_publicados = forms.IntegerField(
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control'
+        }),
+        label='Número de videos publicados'
+    )
+    ubicacion = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Ubicación'
+        }),
+        label='Ubicación'
+    )
+    fecha_nacimiento = forms.DateField(
+        widget=forms.DateInput(attrs={
+            'class': 'form-control',
+            'type': 'date'
+        }),
+        label='Fecha de nacimiento'
+    )
+
+    genero = forms.ChoiceField(
+        widget=forms.Select(attrs={
+            'class': 'form-control'
+        }),
+        label='Género'
+    )
+    lista_amigos_visible = forms.BooleanField(
+        widget=forms.CheckboxInput(attrs={
+            'class': 'form-check-input'
+        }),
+        label='¿Lista de amigos visible?'
+    )
+    codigo_pais = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Código del país'
+        }),
+        label='Código del país'
+    )
+    numero_telefono = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Número de teléfono'
+        }),
+        label='Número de teléfono'
+    )
+
+    class Meta:
+        model = PerfilUsuario
+        fields = [
+            'foto_perfil', 'foto_portada', 'biografia', 'rol_trabajo',
+            'nivel_educativo', 'fecha_inicio_suscripcion', 'fecha_fin_suscripcion',
+            'enlace_facebook', 'enlace_youtube', 'numero_seguidores',
+            'numero_videos_publicados', 'ubicacion', 'fecha_nacimiento',
+            'genero', 'lista_amigos_visible', 'codigo_pais', 'numero_telefono'
+        ]
+
 class TokenVerificacionCorreoForm(forms.ModelForm):
     class Meta:
         model = TokenVerificacionCorreo
@@ -59,6 +188,9 @@ class RegistroForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
+
+
+
 
 class PerfilUsuarioForm(forms.ModelForm):
     class Meta:
