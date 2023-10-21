@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block extra_head %}
+    <!-- Estilos adicionales para esta página -->
+    <style>
+        /* Estilos específicos de la página "Acerca de Nosotros" */
+        .about-us {
+            margin: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .mission-vision-values {
+            margin: 20px;
+            padding: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="about-us">
+        <h1>Acerca de Nosotros</h1>
+        <p>Somos una plataforma de educación financiera dedicada a proporcionar información valiosa sobre finanzas personales e inversión
+        Nuestro objetivo es empoderar a las personas para que tomen decisiones financieras informadas y alcancen sus metas financieras
+        Ofrecemos una amplia gama de cursos, recursos y herramientas para ayudarte a mejorar tus habilidades financieras y planificar tu futuro.</p>
+        <div class="mission-vision-values">
+        <h1>Misión</h1>
+        <p>Nuestra misión es proporcionar educación financiera de alta calidad y recursos que empoderen a las personas para tomar decisiones financieras informadas y alcanzar sus metas financieras.</p>
+            
+        <h1>Visión</h1>
+        <p>Nuestra visión es ser la principal plataforma de educación financiera, reconocida por su compromiso con la excelencia y la transformación de vidas a través del conocimiento financiero.</p>
+            
+        <h1>Valores</h1>
+            <ul>
+                <li><strong>Integridad:</strong> Actuamos con honestidad y transparencia en todo lo que hacemos.</li>
+                <li><strong>Compromiso:</strong> Estamos comprometidos a brindar contenido educativo de calidad.</li>
+                <li><strong>Empoderamiento:</strong> Empoderamos a las personas a tomar el control de sus finanzas.</li>
+                <li><strong>Innovación:</strong> Buscamos continuamente formas nuevas y creativas de brindar educación financiera.</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        // Código JavaScript específico para esta página (si es necesario)
+    </script>
+{% endblock %}

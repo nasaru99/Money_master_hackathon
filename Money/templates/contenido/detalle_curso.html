@@ -1,5 +1,17 @@
 {% extends 'base.html' %}
-
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<style>
+    .custom-link {
+        color: inherit;
+        text-decoration: none;
+    }
+    
+    .custom-link:hover {
+        text-decoration: underline;
+    }   
+</style>
+{% endblock %}
 {% block content %}
 <div class="container mt-5">
     <div class="row">
@@ -19,21 +31,37 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row mt-4">
         <div class="col-md-8 offset-md-2">
-            <h3>Lecciones:</h3>
-            <ul class="list-group">
+            <h3 class="mb-3">Lecciones:</h3>
+            <div class="list-group">
                 {% for leccion in lecciones %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <span>{{ leccion.titulo }}</span>
-                        {% if user == curso.instructor %}
-                            <a href="{% url 'marcar_como_completada' leccion_id=leccion.id %}" class="btn btn-success btn-sm">Completada</a>
-                        {% endif %}
-                    </li>
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{% url 'contenido_leccion' leccion.id %}" class="custom-link font-weight-bold">{{ leccion.titulo }}</a>
+                            {% if user == curso.instructor %}
+                                <a href="{% url 'marcar_como_completada' leccion_id=leccion.id %}" class="btn btn-success btn-sm ml-2"><i class="fas fa-check"></i> Completada</a>
+                            {% endif %}
+                        </div>
+                        <div class="mt-2 d-flex justify-content-between align-items-center">
+                            <button class="btn btn-link btn-sm" type="button" data-toggle="collapse" data-target="#detalleLeccion{{ leccion.id }}" aria-expanded="false">
+                                Detalles <i class="fas fa-chevron-down detail-icon"></i>
+                            </button>
+                        </div>
+                        <div class="collapse mt-2" id="detalleLeccion{{ leccion.id }}">
+                            <small>
+                                <p><strong>Resumen:</strong> {{ leccion.resumen }}</p>
+                                <p><strong>Tipo de Contenido:</strong> {{ leccion.contenido.tipo }}</p>
+                                <p><strong>Duración:</strong> {{ leccion.duracion }}</p>
+                            </small>
+                        </div>
+                    </div>
                 {% endfor %}
-            </ul>
+            </div>
         </div>
     </div>
+    
+    
 
     <div class="row mt-4">
         <div class="col-md-8 offset-md-2">
@@ -59,4 +87,16 @@
         </div>
     {% endif %}
 </div>
+
+{% block js %}
+    <script>
+        $(document).ready(function() {
+            $('.btn-link').on('click', function() {
+                var icon = $(this).find('.detail-icon');
+                icon.toggleClass('fa-chevron-down fa-chevron-up');
+            });
+        });
+        
+    </script>
+{%endblock%}
 {% endblock %}

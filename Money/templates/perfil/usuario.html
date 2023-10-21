@@ -6,6 +6,7 @@
  /* Estilo general para el perfil de usuario */
 .container {
     margin-top: 20px;
+    max-width: 1720px;
 }
 
 /* Estilo para la sección izquierda */
@@ -199,16 +200,12 @@ button.btn-secondary {
 {% block content %}
 <div class="container mt-5">
     <!-- Foto de portada -->
-    <div class="row">
-        <div class="col-12">
-            <img src="{{ perfil_usuario.foto_portada.url }}" alt="Foto de portada" class="img-fluid">
-        </div>
-    </div>
+    <img src="{{ perfil_usuario.foto_portada.url }}" alt="Foto de portada"style="width:100vw;">
 
     <div class="row mt-4 align-items-center">
         <!-- Foto de perfil -->
-        <div class="col-md-3">
-            <img src="{{ perfil_usuario.foto_perfil.url }}" alt="Foto de perfil" class="img-thumbnail">
+        <div>
+            <img src="{{ perfil_usuario.foto_perfil.url }}" alt="Foto de perfil" class="img-thumbnail" >
         </div>
 
         <!-- Nombre y correo del usuario -->
@@ -218,9 +215,9 @@ button.btn-secondary {
         </div>
 
         <!-- Botones -->
-        <div class="col-md-3 text-right">
-            <button class="btn btn-primary">Agregar Curso</button>
-            <button class="btn btn-secondary">Editar Perfil</button>
+        <div style="display:flex; margin-inline-start: 817px; gap: 129;">
+            <button style="border:none; border-radius: 30px;width: 343px; height: 92px;font-size:30px;line-height: 40.85px; background-color:#d8c6ff;">Agregar Curso</button>
+            <button style="border:none; border-radius: 30px;width: 343px; height: 92px;font-size:30px;line-height: 40.85px; background-color:#d8c6ff;">Editar Perfil</button>
         </div>
     </div>
 
@@ -251,22 +248,50 @@ button.btn-secondary {
     </div>
 
     <!-- Detalles del perfil y publicaciones -->
-    <div class="row mt-4">
+    <div style="display:flex; flex-direction: row; margin-block-start: 86px; gap: 61px; width:1540px;">
         <!-- Biografía y detalles adicionales -->
-        <div class="col-md-8">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">Presentación</h5>
-                    <p class="card-text">{{ perfil_usuario.biografia }}</p>
-                    <button class="btn btn-outline-primary">Editar presentación</button>
+        <div>
+            <div class="card mb-4" style="background-color:#e0d1ff; width:674px;border-radius:30px;border:none;">
+                <h5 class="card-title" style="margin-inline-start:37px; margin-block-start:37px;font-size:50px; line-height:68.09px;color:black;">Detalles</h5>
+                <div style="display:flex;align-items:center; justify-content:center;flex-direction:column;">
+                    <p class="card-text" style="font-size:30px; line-height:40.85px;color:black;">{{ perfil_usuario.biografia }}</p>
+                    <button class="btn btn-outline-primary" style="background-color:#c9afff; width:465px; height:94px; font-size:30px; line-height:40.85px;color:#282323;border:none; border-radius:40px;">Editar presentación</button>
+                </div>
+                <div class="card-body" style="margin-block-start:49px;font-size:30px; line-height: 40.85px;display:flex; flex-direction: column; gap:30px;">
+                    <p style="color: black !important;margin-inline-start: 70px;">Trabajo: {{ perfil_usuario.detalle.trabajos }}</p>
+                    <p style="color: black !important;margin-inline-start: 70px;">Estudio: {{ perfil_usuario.detalle.estudios }}</p>
+                    <p style="color: black !important;margin-inline-start: 70px;">Ubicacion: {{ perfil_usuario.detalle.ubicacion }}</p>
+                    <div style="display:flex;align-items:center; justify-content:center; margin-block-end:91px;">
+                        <button class="btn btn-outline-primary" style="background-color:#c9afff; width:465px; height:94px; font-size:30px; line-height:40.85px;color:#282323;border:none; border-radius:40px;">Editar detalles</button>
+                    </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Más detalles</h5>
-                    <p class="card-text">Trabajo: {{ perfil_usuario.detalle.trabajos }}</p>
-                    <p class="card-text">Estudio: {{ perfil_usuario.detalle.estudios }}</p>
-                    <p class="card-text">Ubicacion: {{ perfil_usuario.detalle.ubicacion }}</p>
+            <div class="card" style="background-color:#e0d1ff; width:674px; border-radius:30px;border:none;">
+                <div style="display:flex; flex-direction:row; align-items:center; justify-content:space-between;margin-inline: 70px;margin-block-start: 47px;">
+                    <div style="display:flex; flex-direction:column; align-items:center; justify-content:space-between;">
+                        <p>Amigos</p>
+                        <p>2002 amigos</p>
+                    </div>
+                    <a href="# style="">Ver todos los amigos</a>
+                </div>
+                <div class="card-body" style="padding-inline: 68px; display: flex; flex-direction:row; flex-wrap: wrap; gap: 68px;">
+                    <ul class="list-group" style="display: flex; flex-direction:row; flex-wrap: wrap; gap: 68px;">
+                        {% for amigo in amigos %}
+                        <li class="list-group-item"  style="width:235px;display:flex; align-items:center;flex-direction:column;padding:0 !important; background-color:#e0d1ff;">
+                            <div style="background-color:white; width:235px; height: 200px; border:1px solid black;">
+                                Imagen amigo
+                            </div>
+                            <a href="#" class="chat-link" data-toggle="modal" data-target="#amigoModal{{ amigo.id }}" style="">
+                                {% if amigo.usuario1 == request.user %}
+                                    {{ amigo.usuario2.username }}
+                                {% else %}
+                                    {{ amigo.usuario1.username }}
+                                {% endif %}
+                            </a>
+                        </li>
+                    {% endfor %}
+                    
+                    </ul>
                 </div>
             </div>
             <!-- Mensajería -->
@@ -295,27 +320,7 @@ button.btn-secondary {
                                 </div>
                             </div>
                             <!-- Lista de amigos -->
-                            <div class="card">
-                                <div class="card-header">
-                                    Tus Amigos
-                                </div>
-                                <div class="card-body">
-                                    <ul class="list-group">
-                                        {% for amigo in amigos %}
-                                        <li class="list-group-item">
-                                            <a href="#" class="chat-link" data-toggle="modal" data-target="#amigoModal{{ amigo.id }}">
-                                                {% if amigo.usuario1 == request.user %}
-                                                    {{ amigo.usuario2.username }}
-                                                {% else %}
-                                                    {{ amigo.usuario1.username }}
-                                                {% endif %}
-                                            </a>
-                                        </li>
-                                    {% endfor %}
-                                    
-                                    </ul>
-                                </div>
-                            </div>
+                            
                         </div>
                         <div class="col-md-8">
                             <!-- Ventana de chat (se muestra en el modal) -->
@@ -405,28 +410,22 @@ button.btn-secondary {
                                 </div>
                             {% endfor %}
                         </div>
-                        
                     </div>
                 </div>
             </div>
         </div>
-        </div>
-
         <!-- Publicaciones -->
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <img src="{{ perfil_usuario.foto_perfil.url }}" alt="Foto de perfil" class="card-img-top">
-                <div class="card-body">
-                    <h5 class="card-title">Publicaciones</h5>
-                    {% for publicacion in publicaciones %}
-                        <div class="card mt-3">
-                            <div class="card-body">
-                                <h6 class="card-title">Titulo: {{ publicacion.titulo }}</h6>
-                                <p class="card-text">Descripcion: {{ publicacion.descripcion|truncatewords:20 }}</p>
-                            </div>
+        <div style="width: 805px;  border: 1px solid black;">
+            <div class="card-body" style="padding: 0;">
+                {% for publicacion in publicaciones %}
+                    <div style="border: 1px solid black;background-color:#e0d1ff;">
+                        <div class="card-body" style="padding: 0;">
+                            <h6 class="card-title">Titulo: {{ publicacion.titulo }}</h6>
+                            <p class="card-text">Descripcion: {{ publicacion.descripcion|truncatewords:20 }}</p>
+                            <img src="{{ perfil_usuario.foto_perfil.url }}" alt="Foto de perfil" style="width: 668px;height:367px;object-fit:fill; margin-inline:68px;">
                         </div>
-                    {% endfor %}
-                </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </div>

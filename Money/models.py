@@ -48,7 +48,7 @@ class InscripcionCurso(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     fecha_inscripcion = models.DateTimeField(auto_now_add=True)
-    completado = models.BooleanField(default=False)
+    completado = models.IntegerField(default=False)
     progreso = models.PositiveIntegerField(default=0)
     class Meta:
         unique_together = ('usuario', 'curso')

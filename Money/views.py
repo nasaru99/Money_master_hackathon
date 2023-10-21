@@ -451,6 +451,7 @@ def marcar_como_completada(request, leccion_id):
 
 
 def user_login(request):
+    print()
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -680,6 +681,9 @@ def youtube_search(request):
 
 def aprendizaje(request):
     return render(request, 'aprendizaje.html')
+
+def nosotros(request):
+    return render(request, 'Nosotros.html')
 
 def compras(request):
     return render(request, 'compras.html')

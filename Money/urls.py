@@ -3,7 +3,8 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
-
+from django.conf import settings
+from django.conf.urls import include
 urlpatterns = [
     path('buscar/', views.buscar, name='buscar'),
     # Rutas para la página de inicio
@@ -27,6 +28,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 
     # Rutas para la gestión de contenido
+    path('nosotros/', views.nosotros, name='nosotros'),
     path('perfil/', views.perfil, name='perfil'),
     path('contenido/crear_curso/', views.crear_curso, name='crear_curso'),
     path('contenido/crear_leccion/<int:curso_id>/', views.crear_leccion, name='crear_leccion'),

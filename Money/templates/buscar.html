@@ -10,7 +10,7 @@
     {% for resultado in resultados %}
         <li>
             {% if resultado|class_name == "PerfilUsuario" %}
-                <a href="{% url 'perfil_usuario' username=resultado.usuario.username %}">{{ resultado.usuario.username }}</a>
+                <a >{{ resultado.usuario.username }}</a>
             
             {% else %}
                 {# Aquí deberás personalizar cómo deseas mostrar cada tipo de objeto #}
