@@ -215,9 +215,18 @@ def responder_preguntas(request, leccion_id):
                     respuesta_usuario.save()
 
         # Verificar si todas las respuestas son correctas
-        if respuestas_correctas == preguntas.count():
-            messages.success(request, '¡Todas tus respuestas son correctas!')
-            return redirect('contenido_leccion', leccion_id=leccion_id)
+            if respuestas_correctas == preguntas.count():
+                messages.success(request, '¡Todas tus respuestas son correctas!')
+                ProgresoLeccion.objects.create(
+                    usuario=request.user,
+                    leccion=leccion,
+                    completado=True
+                    )
+                
+                # Redirigir al usuario a la vista detalle_curso
+                curso_id = leccion.curso.id
+
+                return redirect(reverse('detalle_curso', args=[curso_id]))
         else:
             messages.warning(request, 'Algunas respuestas son incorrectas. Por favor, inténtalo de nuevo.')
 
@@ -618,7 +627,7 @@ def solicitar_recuperacion(request):
             token = TokenVerificacionCorreo.objects.create(user=user)
             mail_subject = 'Recuperación de contraseña'
             domain = get_current_site(request).domain
-            reset_link = f"http://{domain}/resetear-contraseña/{token.token}/"
+            reset_link = f"https://g13sw8nq-8000.use.devtunnels.ms//resetear-contraseña/{token.token}/"
             message = render_to_string(
                 'crear_user/reset_password_email.html',
                 {
@@ -652,7 +661,7 @@ def resetear_contraseña(request, token):
         token_obj.delete()
         return redirect('login')
     
-    return render(request, 'crear_user/resetear_contraseña.html')
+    return render(request, 'crear_user/resetear_contraseña.html', {'token': token})
 
 from .models import PerfilUsuario, DetallePerfilUsuario, Publicacion
 @login_required
@@ -844,12 +853,13 @@ from django.urls import reverse
 from django.shortcuts import redirect
 from django.conf import settings
 
+
 def iniciar_oauth2(request):
     # Crear un flujo de autenticación
     flow = Flow.from_client_config({
         "web": {
-            "client_id": settings.GOOGLE_OAUTH2_CLIENT_ID,
-            "client_secret": settings.GOOGLE_OAUTH2_CLIENT_SECRET,
+            "client_id": "711545168062-uvq9opsk6jol216rhsikbnt3r6rg86jf.apps.googleusercontent.com",
+            "client_secret": "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",
             "auth_uri": "https://accounts.google.com/o/oauth2/auth",
             "token_uri": "https://oauth2.googleapis.com/token",
             "redirect_uris": [
