@@ -92,13 +92,20 @@ def buscar(request):
 def index(request):
     cursos = Curso.objects.all()[:10]  # Obtener los primeros 10 cursos
     comentarios = Comentario.objects.filter(curso__in=cursos)  # Obtener los comentarios de esos cursos
+    comentarios_segmentados = [comentarios[i:i + 3] for i in range(0, len(comentarios), 3)]
+    
+    # Obtener las categorías principales
+    categorias_principales = Curso.CATEGORIAS_CHOICES
 
     context = {
         'cursos': cursos,
-        'comentarios': comentarios
+        'comentarios': comentarios,
+        'comentarios_segmentados': comentarios_segmentados,
+        'categorias_principales': categorias_principales  # Agrega esto
     }
 
     return render(request, 'inicio.html', context)
+
 @login_required
 def index_contenido(request):
      # Todos los cursos

@@ -3,6 +3,13 @@ from django.contrib.auth.models import User
 import uuid
 from django.utils import timezone
 
+
+class Imagen(models.Model):
+    nombre = models.CharField(max_length=200)
+    archivo = models.ImageField(upload_to='imagenes/')
+    
+    def __str__(self):
+        return self.nombre
 # gestios de cursos
 class Curso(models.Model):
     titulo = models.CharField(max_length=200)
@@ -279,13 +286,15 @@ class Comentario(models.Model):
     texto = models.TextField()
     fecha_comentario = models.DateTimeField(auto_now_add=True)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    publicacion = models.ForeignKey(Publicacion, on_delete=models.CASCADE)
-    curso = models.ForeignKey(Curso, on_delete=models.CASCADE, default=1)
+    publicacion = models.ForeignKey(Publicacion, on_delete=models.CASCADE, null=True, blank=True)
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE, default=1, null=True, blank=True)
     likes = models.PositiveIntegerField(default=0)
     comentario_padre = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
 
     def es_respuesta(self):
         return True if self.comentario_padre else False
+
+
 # Chat y Mensajes
 class GrupoChat(models.Model):
     nombre = models.CharField(max_length=100)

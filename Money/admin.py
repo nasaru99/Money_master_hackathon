@@ -5,11 +5,15 @@ from .models import (
     Contenido, Publicacion, Comentario, GrupoChat, UsuarioGrupo, TipoMensaje, MensajePrivado,
     EstadoLectura, Pago, Amigo, Amistad,DetallePerfilUsuario
 )
-
+from .models import Imagen
 
 
 from .models import Pregunta, Respuesta, RespuestaUsuario
+class ImagenAdmin(admin.ModelAdmin):
+    list_display = ['nombre', 'archivo']
+    search_fields = ['nombre']
 
+admin.site.register(Imagen, ImagenAdmin)
 class RespuestaInline(admin.TabularInline):
     model = Respuesta
     extra = 3  # Por defecto, muestra 3 campos para respuestas
